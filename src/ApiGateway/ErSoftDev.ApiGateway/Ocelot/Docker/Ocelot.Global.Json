@@ -1,0 +1,17 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5203",
+    "ServiceDiscoveryProvider": {
+      "Host": "host.docker.internal",
+      "Port": 8500,
+      "Type": "PollConsul",
+      "PollingInterval": 100
+      //"Type": "Consul" - Each Request it will update information
+      /*
+        Type
+          Consul, means that Ocelot will get service information from consul per request
+          PollConsul, means that Ocelot will poll Consul for latest service information
+      */
+    }
+  }
+}

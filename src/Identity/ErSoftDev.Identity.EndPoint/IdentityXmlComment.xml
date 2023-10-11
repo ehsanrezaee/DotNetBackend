@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ErSoftDev.Identity.EndPoint</name>
+    </assembly>
+    <members>
+        <member name="T:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountProtoReflection">
+            <summary>Holder for reflection information generated from Grpc/Protos/AccountProto.proto</summary>
+        </member>
+        <member name="P:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountProtoReflection.Descriptor">
+            <summary>File descriptor for Grpc/Protos/AccountProto.proto</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenRequestGrpc.SecurityStampTokenFieldNumber">
+            <summary>Field number for the "SecurityStampToken" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenResponseGrpc.StatusFieldNumber">
+            <summary>Field number for the "Status" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenResponseGrpc.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenResponseGrpc.ErrorCodeFieldNumber">
+            <summary>Field number for the "ErrorCode" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenResponseGrpc.ErrorDescriptionFieldNumber">
+            <summary>Field number for the "ErrorDescription" field.</summary>
+        </member>
+        <member name="P:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.AccountGrpcServiceBase">
+            <summary>Base class for server-side implementations of AccountGrpcService</summary>
+        </member>
+        <member name="M:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.BindService(ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.AccountGrpcServiceBase)">
+            <summary>Creates service definition that can be registered with a server</summary>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="M:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.BindService(Grpc.Core.ServiceBinderBase,ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.AccountGrpcServiceBase)">
+            <summary>Register service method with a service binder with or without implementation. Useful when customizing the service binding logic.
+            Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
+            <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+    </members>
+</doc>

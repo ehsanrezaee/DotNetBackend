@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>bfd227b7-eb90-46b4-84c0-9c3a76c7cbe9</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..\..</DockerfileContext>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>GatewayXmlComment.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Jwt\**" />
+		<Content Remove="Jwt\**" />
+		<EmbeddedResource Remove="Jwt\**" />
+		<None Remove="Jwt\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="ocelot.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Grpc.Tools" Version="2.58.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
+		<PackageReference Include="MMLib.SwaggerForOcelot" Version="7.0.0" />
+		<PackageReference Include="Ocelot" Version="19.0.4" />
+		<PackageReference Include="Ocelot.Cache.CacheManager" Version="19.0.2" />
+		<PackageReference Include="Ocelot.Provider.Polly" Version="19.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\ErSoftDev.Framework\ErSoftDev.Framework.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="Infrastructure\ServiceProviderConfiguration\Identity\Protos\AccountProto.proto" GrpcServices="Client" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
+
+</Project>

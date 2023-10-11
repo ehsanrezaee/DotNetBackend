@@ -1,0 +1,74 @@
+{
+  "Routes": [
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "Identity",
+      "UpstreamPathTemplate": "/api/{version}/Account/Login",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/{version}/Account/Login",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "Identity",
+      "Priority": 1,
+      "ReRoutesCaseSensitive": false,
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      }
+    },
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "Identity",
+      "UpstreamPathTemplate": "/api/{version}/Account/Register",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "DownstreamPathTemplate": "/api/{version}/Account/Register",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "Identity",
+      "Priority": 1,
+      "ReRoutesCaseSensitive": false,
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      }
+    },
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "Identity",
+      "UpstreamPathTemplate": "/api/{version}/Account/Update",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "DownstreamPathTemplate": "/api/{version}/Account/Update",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "Identity",
+      "Priority": 1,
+      "ReRoutesCaseSensitive": false,
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      }
+    },
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "Identity",
+      "UpstreamPathTemplate": "/api/{version}/Account/GetRefreshToken",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "DownstreamPathTemplate": "/api/{version}/Account/GetRefreshToken",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "Identity",
+      "Priority": 1,
+      "ReRoutesCaseSensitive": false,
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      }
+    },
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "Identity",
+      "UpstreamPathTemplate": "/api/{version}/Account/RevokeRefreshToken",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "DownstreamPathTemplate": "/api/{version}/Account/RevokeRefreshToken",
+      "DownstreamScheme": "https",
+      "SwaggerKey": "Identity",
+      "Priority": 1,
+      "ReRoutesCaseSensitive": false,
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      }
+    }
+  ]
+}

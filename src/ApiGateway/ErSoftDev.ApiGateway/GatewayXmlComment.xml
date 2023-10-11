@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ErSoftDev.ApiGateway</name>
+    </assembly>
+    <members>
+        <member name="T:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountProtoReflection">
+            <summary>Holder for reflection information generated from Infrastructure/ServiceProviderConfiguration/Identity/Protos/AccountProto.proto</summary>
+        </member>
+        <member name="P:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountProtoReflection.Descriptor">
+            <summary>File descriptor for Infrastructure/ServiceProviderConfiguration/Identity/Protos/AccountProto.proto</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenRequestGrpc.SecurityStampTokenFieldNumber">
+            <summary>Field number for the "SecurityStampToken" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenResponseGrpc.StatusFieldNumber">
+            <summary>Field number for the "Status" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenResponseGrpc.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenResponseGrpc.ErrorCodeFieldNumber">
+            <summary>Field number for the "ErrorCode" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenResponseGrpc.ErrorDescriptionFieldNumber">
+            <summary>Field number for the "ErrorDescription" field.</summary>
+        </member>
+        <member name="P:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.AccountGrpcServiceClient">
+            <summary>Client for AccountGrpcService</summary>
+        </member>
+        <member name="M:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.AccountGrpcServiceClient.#ctor(Grpc.Core.ChannelBase)">
+            <summary>Creates a new client for AccountGrpcService</summary>
+            <param name="channel">The channel to use to make remote calls.</param>
+        </member>
+        <member name="M:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.AccountGrpcServiceClient.#ctor(Grpc.Core.CallInvoker)">
+            <summary>Creates a new client for AccountGrpcService that uses a custom <c>CallInvoker</c>.</summary>
+            <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+        </member>
+        <member name="M:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.AccountGrpcServiceClient.#ctor">
+            <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+        </member>
+        <member name="M:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.AccountGrpcServiceClient.#ctor(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Protected constructor to allow creation of configured clients.</summary>
+            <param name="configuration">The client configuration.</param>
+        </member>
+        <member name="M:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.AccountGrpcServiceClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+        </member>
+    </members>
+</doc>

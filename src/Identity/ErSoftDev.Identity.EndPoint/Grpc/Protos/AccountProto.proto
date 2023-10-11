@@ -1,0 +1,18 @@
+syntax = "proto3";
+option csharp_namespace = "ErSoftDev.Identity.EndPoint.Grpc.Protos";
+package AccountGrpcService;
+import "google/protobuf/wrappers.proto";
+
+service AccountGrpcService{
+	rpc IsSecurityStampTokenValid(IsSecurityStampTokenRequestGrpc) returns (IsSecurityStampTokenResponseGrpc);
+}
+
+message IsSecurityStampTokenRequestGrpc{
+	string SecurityStampToken=1;
+}
+message IsSecurityStampTokenResponseGrpc{
+	int32 Status=1;
+	string Description=2;
+	.google.protobuf.Int32Value ErrorCode=3;
+	.google.protobuf.StringValue ErrorDescription=4;
+}

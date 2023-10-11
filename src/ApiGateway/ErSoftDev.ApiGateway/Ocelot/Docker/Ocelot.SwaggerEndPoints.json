@@ -1,0 +1,15 @@
+{
+  "SwaggerEndPoints": [
+    {
+      "Key": "Identity",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Identity API",
+          "Version": "1.0",
+          "Url": "http://host.docker.internal:5202/swagger/v1.0/swagger.json"
+        }
+      ]
+    }
+  ]
+}

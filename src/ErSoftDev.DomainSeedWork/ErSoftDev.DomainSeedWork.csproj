@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackageId>ErSoftDev.DomainSeedWork</PackageId>
+		<Title>Domain seed work </Title>
+		<Version>1.0.2</Version>
+		<Authors>Ehsaan rezaee</Authors>
+		<Company>ErSoftDev</Company>
+		<Product>DomainSeedWork</Product>
+		<Description>Library that meet all the needs of the rich domain</Description>
+		<RepositoryUrl>https://github.com/ehsanrezaee/DotNetBackend</RepositoryUrl>
+		<PackageTags>DDD, Domain Driven Design , Rich Domain ,POCO</PackageTags>
+		<Copyright></Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MediatR" Version="12.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.9" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\SharedTranslate.Designer.cs">
+	    <DependentUpon>SharedTranslate.resx</DependentUpon>
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\SharedTranslate.en-US.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\SharedTranslate.resx">
+	    <LastGenOutput>SharedTranslate.Designer.cs</LastGenOutput>
+	    <Generator>ResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>
