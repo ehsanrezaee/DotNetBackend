@@ -16,6 +16,7 @@ Brief descriptions :
 - Use rabbitMq as message broker with eventBus
 - Use redis bus 
 - Use jaeger as log stream
+- Use hangfire for background tasks and cron jobs
 - Support multilanguage response
 - Use multi environment applications and apigateway
 - Standard API Resulting
