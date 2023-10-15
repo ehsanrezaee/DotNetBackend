@@ -12,7 +12,7 @@
         public EventBusRabbitMq? EventBusRabbitMq { get; set; }
         public NotificationEmail NotificationEmail { get; set; }
         public Redis? Redis { get; set; }
-        public Hangfire Hangfire { get; set; }
+        public Hangfire? Hangfire { get; set; }
         public Jaeger? Jaeger { get; set; }
         public ServiceDiscoveryConfig? ServiceDiscoveryConfig { get; set; }
     }
@@ -97,7 +97,6 @@
 
     public class Hangfire
     {
-        public bool UseDatabase { get; set; }
         public int CommandBatchMaxTimeout { get; set; }
         public int SlidingInvisibilityTimeout { get; set; }
         public bool UseRecommendedIsolationLevel { get; set; }

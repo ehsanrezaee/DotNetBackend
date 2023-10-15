@@ -28,6 +28,7 @@
         DbError = 17,
         RequestHasNotToken = 18,
         TokenIsNotValid = 19,
-        SecurityStampTokenIsNotValid = 20
+        SecurityStampTokenIsNotValid = 20,
+        ProviderNotAvailable = 21
     }
 }

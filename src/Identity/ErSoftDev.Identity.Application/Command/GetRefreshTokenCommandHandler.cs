@@ -1,5 +1,5 @@
 ﻿using ErSoftDev.DomainSeedWork;
-using ErSoftDev.Framework.IdGenerate;
+
 using ErSoftDev.Framework.Jwt;
 using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 using MediatR;
@@ -8,18 +8,19 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using Microsoft.Extensions.Localization;
 using ErSoftDev.Framework.BaseApp;
+using IdGen;
 
 namespace ErSoftDev.Identity.Application.Command
 {
     public class GetRefreshTokenCommandHandler : IRequestHandler<GetRefreshTokenCommand, ApiResult<RefreshTokenResponse>>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IIdGenerator _idGenerator;
+        private readonly IIdGenerator<long> _idGenerator;
         private readonly IOptions<AppSetting> _appSetting;
         private readonly IJwtService _jwtService;
         private readonly IStringLocalizer<SharedTranslate> _stringLocalizer;
 
-        public GetRefreshTokenCommandHandler(IUserRepository userRepository, IIdGenerator idGenerator,
+        public GetRefreshTokenCommandHandler(IUserRepository userRepository, IIdGenerator<long> idGenerator,
             IOptions<AppSetting> appSetting, IJwtService jwtService, IStringLocalizer<SharedTranslate> stringLocalizer)
         {
             _userRepository = userRepository;

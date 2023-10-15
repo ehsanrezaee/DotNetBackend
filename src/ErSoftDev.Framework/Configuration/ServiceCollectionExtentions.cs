@@ -31,6 +31,7 @@ using OpenTracing.Contrib.NetCore.Configuration;
 using StackExchange.Redis;
 using ErSoftDev.Framework.BaseApp;
 using Consul;
+using IdGen.DependencyInjection;
 
 namespace ErSoftDev.Framework.Configuration
 {
@@ -300,6 +301,8 @@ namespace ErSoftDev.Framework.Configuration
 
         public static void AddCustomHangfire(this IServiceCollection services, AppSetting appSetting)
         {
+            if (appSetting.Hangfire is null)
+                return;
 
             services.AddHangfire(config =>
                 config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -330,6 +333,11 @@ namespace ErSoftDev.Framework.Configuration
             {
                 consulConfig.Address = new Uri(appSetting.ServiceDiscoveryConfig.ConsulUrl);
             }));
+        }
+
+        public static void AddCustomIdGenerator(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddIdGen(123);
         }
     }
 }

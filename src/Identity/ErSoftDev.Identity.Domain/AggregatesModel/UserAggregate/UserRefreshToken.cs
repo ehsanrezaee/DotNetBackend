@@ -1,4 +1,5 @@
-﻿using ErSoftDev.DomainSeedWork;
+﻿
+using ErSoftDev.DomainSeedWork;
 using System.Text;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate

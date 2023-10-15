@@ -151,6 +151,15 @@ namespace ErSoftDev.DomainSeedWork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سرویس دهنده در دسترسی نمی باشد.
+        /// </summary>
+        internal static string ProviderNotAvailable {
+            get {
+                return ResourceManager.GetString("ProviderNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رفرش توکن غیر فعال می باشد.
         /// </summary>
         internal static string RefreshTokenIsDeActive {
