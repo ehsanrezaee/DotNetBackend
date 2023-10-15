@@ -189,4 +189,7 @@
   <data name="SecurityStampTokenIsNotValid" xml:space="preserve">
     <value>Security stamp token is not valid</value>
   </data>
+  <data name="ProviderNotAvailable" xml:space="preserve">
+    <value>Provider is not available</value>
+  </data>
 </root>

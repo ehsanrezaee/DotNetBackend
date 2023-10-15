@@ -7,7 +7,7 @@ namespace ErSoftDev.Common.Utilities
     {
         public static async Task<HttpResponseMessage> SendHttpAsync<TRequest>(IHttpClientFactory client,
             string serviceUrl,
-            TRequest request, HttpMethod httpMethod, CancellationToken cancellationToken
+            TRequest? request, HttpMethod httpMethod, CancellationToken cancellationToken
             , Dictionary<string, string>? headers = null, string contentType = "application/json")
         {
 

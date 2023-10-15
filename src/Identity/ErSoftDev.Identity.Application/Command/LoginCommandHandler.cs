@@ -2,9 +2,9 @@
 using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
-using ErSoftDev.Framework.IdGenerate;
 using ErSoftDev.Framework.Jwt;
 using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
+using IdGen;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
@@ -17,11 +17,11 @@ namespace ErSoftDev.Identity.Application.Command
         private readonly IJwtService _jwtService;
         private readonly IUserRepository _userRepository;
         private readonly IOptions<AppSetting> _appSetting;
-        private readonly IIdGenerator _idGenerator;
+        private readonly IIdGenerator<long> _idGenerator;
         private readonly IStringLocalizer<SharedTranslate> _stringLocalizer;
 
         public LoginCommandHandler(IJwtService jwtService, IUserRepository userRepository,
-            IOptions<AppSetting> appSetting, IIdGenerator idGenerator, IStringLocalizer<SharedTranslate> stringLocalizer)
+            IOptions<AppSetting> appSetting, IIdGenerator<long> idGenerator, IStringLocalizer<SharedTranslate> stringLocalizer)
         {
             _jwtService = jwtService;
             _userRepository = userRepository;

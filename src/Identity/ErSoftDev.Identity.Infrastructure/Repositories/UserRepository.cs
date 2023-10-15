@@ -16,13 +16,13 @@ namespace ErSoftDev.Identity.Infrastructure.Repositories
         private readonly ILogger<UserRepository> _logger;
         public IUnitOfWork UnitOfWork => _identityDbContext;
 
-        public UserRepository(IdentityDbContext identityDbContext , ILogger<UserRepository> logger)
+        public UserRepository(IdentityDbContext identityDbContext, ILogger<UserRepository> logger)
         {
             _identityDbContext = identityDbContext;
             _logger = logger;
         }
 
-        public async Task Add(User user)
+        public async Task Add(User user, CancellationToken cancellationToken)
         {
             await _identityDbContext.Users.AddAsync(user);
         }
@@ -33,9 +33,9 @@ namespace ErSoftDev.Identity.Infrastructure.Repositories
                 cancellationToken: cancellationToken);
         }
 
-        public async Task<List<User>> GetList(Expression<Func<User, bool>> predicate)
+        public async Task<List<User>> GetList(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken)
         {
-            return await _identityDbContext.Users.Where(predicate).ToListAsync();
+            return await _identityDbContext.Users.Where(predicate).ToListAsync(cancellationToken);
         }
 
         public async Task<User?> GetByUsernameAndPassword(string username, string password, CancellationToken cancellationToken)

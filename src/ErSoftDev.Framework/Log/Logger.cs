@@ -11,6 +11,7 @@ namespace ErSoftDev.Framework.Log
     {
         private readonly ITracer _tracer;
         private readonly IOptions<AppSetting> _appSetting;
+
         public Logger(ITracer tracer, IOptions<AppSetting> appSetting)
         {
             _tracer = tracer;

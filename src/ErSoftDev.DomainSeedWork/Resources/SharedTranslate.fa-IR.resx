@@ -189,4 +189,7 @@
   <data name="SecurityStampTokenIsNotValid" xml:space="preserve">
     <value>شناسه امنیتی داخل توکن معتبر نمی باشد</value>
   </data>
+  <data name="ProviderNotAvailable" xml:space="preserve">
+    <value>سرویس دهنده در دسترس نمی باشد</value>
+  </data>
 </root>

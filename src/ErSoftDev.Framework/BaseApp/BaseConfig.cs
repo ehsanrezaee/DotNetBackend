@@ -1,6 +1,8 @@
 ﻿using ErSoftDev.Framework.Configuration;
 using ErSoftDev.Framework.Middlewares;
 using ErSoftDev.Framework.RabbitMq;
+using Hangfire;
+using IdGen.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +27,6 @@ namespace ErSoftDev.Framework.BaseApp
 
         public virtual void ConfigureServices(IServiceCollection services)
         {
-
             services.AddCustomMediatr();
             services.AddGrpc();
             services.AddHttpClient();
@@ -33,7 +34,7 @@ namespace ErSoftDev.Framework.BaseApp
             services.AddSingleton(_appSetting);
             services.AddRabbitMqConnection(_appSetting);
             services.AddRabbitMqRegistration(_appSetting);
-            //services.AddCustomHangfire(_appSetting);
+            services.AddCustomHangfire(_appSetting);
             services.AddCustomLocalization();
             services.AddMinimalMvc();
             services.AddJwtAuthentication(_appSetting.Jwt);
@@ -42,7 +43,7 @@ namespace ErSoftDev.Framework.BaseApp
             services.AddControllers();
             services.AddJaeger(_appSetting);
             services.AddCustomConsul(_appSetting);
-            //services.AddHangfire(configuration => configuration.UseMediatR());
+            services.AddCustomIdGenerator();
         }
 
         public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, /*IOptions<AppSetting>*/ AppSetting appsetting)
@@ -57,15 +58,15 @@ namespace ErSoftDev.Framework.BaseApp
             app.UseCustomStaticFile();
             app.UseRouting();
             app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
-            //app.UseHangfireDashboard();
             app.UseCustomConsul(appsetting);
+            app.UseHangfireDashboard("/AppJobs");
             app.UseEndpoints(builder =>
             {
                 builder.MapGet("/",
                     async context => { await context.Response.WriteAsync(appsetting./*Value.*/WelcomeNote ?? ""); });
                 builder.MapControllers();
                 builder.UseGrpcEndPoint();
-                //builder.MapHangfireDashboard();
+                builder.MapHangfireDashboard();
             });
 
         }
