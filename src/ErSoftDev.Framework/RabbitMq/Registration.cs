@@ -20,6 +20,7 @@ namespace ErSoftDev.Framework.RabbitMq
                 var rabbitMqPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
                 var eventBusSubscriptionsManager = sp.GetRequiredService<IEventBusSubscriptionManager>();
                 var logger = sp.GetRequiredService<ILogger<EventBusRabbitMqService>>();
+                var serviceScopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
                 var appSetting = sp.GetRequiredService<IOptions<AppSetting>>();
                 var lifeTimeScope = sp.GetRequiredService<ILifetimeScope>();
 
@@ -34,6 +35,7 @@ namespace ErSoftDev.Framework.RabbitMq
                     lifeTimeScope,
                     brokerName,
                     logger,
+                    serviceScopeFactory,
                     queueName,
                     retryCount,
                     preFetchCount

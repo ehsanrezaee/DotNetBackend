@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace ErSoftDev.DomainSeedWork
 {
-    public abstract class Enumeration : IComparable
+    public class Enumeration : IComparable
     {
         public string Name { get; private set; }
 

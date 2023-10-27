@@ -29,6 +29,7 @@
         RequestHasNotToken = 18,
         TokenIsNotValid = 19,
         SecurityStampTokenIsNotValid = 20,
-        ProviderNotAvailable = 21
+        ProviderNotAvailable = 21,
+        UnhandledExceptionHappened = 22,
     }
 }

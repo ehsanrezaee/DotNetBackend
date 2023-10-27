@@ -192,4 +192,7 @@
   <data name="ProviderNotAvailable" xml:space="preserve">
     <value>سرویس دهنده در دسترسی نمی باشد</value>
   </data>
+  <data name="UnhandledExceptionHappened" xml:space="preserve">
+    <value>خطای پیش بینی نشده ای اتفاق افتاده است</value>
+  </data>
 </root>

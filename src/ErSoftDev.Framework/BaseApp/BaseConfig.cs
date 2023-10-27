@@ -44,6 +44,7 @@ namespace ErSoftDev.Framework.BaseApp
             services.AddJaeger(_appSetting);
             services.AddCustomConsul(_appSetting);
             services.AddCustomIdGenerator();
+            services.AddCustomCap(_appSetting);
         }
 
         public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, /*IOptions<AppSetting>*/ AppSetting appsetting)

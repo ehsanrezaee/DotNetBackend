@@ -32,6 +32,8 @@ using StackExchange.Redis;
 using ErSoftDev.Framework.BaseApp;
 using Consul;
 using IdGen.DependencyInjection;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using TypeExtensions = Swashbuckle.AspNetCore.SwaggerGen.TypeExtensions;
 
 namespace ErSoftDev.Framework.Configuration
 {
@@ -338,6 +340,32 @@ namespace ErSoftDev.Framework.Configuration
         public static void AddCustomIdGenerator(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddIdGen(123);
+        }
+
+        public static void AddCustomCap(this IServiceCollection serviceCollection, AppSetting appSetting)
+        {
+            if (appSetting.EventBusRabbitMq is null)
+                return;
+
+            serviceCollection.AddCap(options =>
+            {
+                //options.UseEntityFramework<BaseDbContext>();
+                options.UseSqlServer(appSetting.ConnectionString);
+                options.UseDashboard(path => path.PathMatch = "/cap-dashboard");
+                options.UseRabbitMQ(options =>
+                {
+                    options.ConnectionFactoryOptions = options =>
+                    {
+                        options.Ssl.Enabled = false;
+                        options.HostName = appSetting.EventBusRabbitMq.HostName;
+                        options.UserName = appSetting.EventBusRabbitMq.Username;
+                        options.Password = appSetting.EventBusRabbitMq.Password;
+                        options.Port = appSetting.EventBusRabbitMq.VirtualPort;
+                    };
+                });
+                options.FailedRetryCount = appSetting.EventBusRabbitMq.TryCount;
+                //options.FailedThresholdCallback=SendEmailOrSms()
+            });
         }
     }
 }

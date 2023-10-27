@@ -6,10 +6,11 @@ namespace ErSoftDev.DomainSeedWork
     {
         public IUnitOfWork UnitOfWork { get; }
 
-        Task Add(T market, CancellationToken cancellationToken);
+        Task Add(T tObject, CancellationToken cancellationToken);
 
         Task<T?> Get(long id, CancellationToken cancellationToken);
 
         Task<List<T>> GetList(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
+
     }
 }
