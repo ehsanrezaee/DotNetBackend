@@ -13,7 +13,7 @@ Brief descriptions :
 - JWT Authentication
 - Secure JWT using Encryption (JWE)
 - Authentication in apigateway by identity
-- Use rabbitMq as message broker with eventBus
+- Use rabbitMq as message broker with CAP eventBus
 - Use redis bus 
 - Use jaeger as log stream
 - Use hangfire for background tasks and cron jobs
