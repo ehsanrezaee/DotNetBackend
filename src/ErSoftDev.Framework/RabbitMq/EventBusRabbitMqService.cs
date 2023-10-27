@@ -5,6 +5,7 @@ using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Log;
 using EventBus.Base.Standard;
 using EventBus.RabbitMQ.Standard;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -25,6 +26,7 @@ namespace ErSoftDev.Framework.RabbitMq
         private readonly string _brokerName;
         private readonly int _retryCount;
         private readonly int _preFetchCount;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger<EventBusRabbitMqService> _logger;
         private readonly ILifetimeScope _lifetimeScope;
 
@@ -38,6 +40,7 @@ namespace ErSoftDev.Framework.RabbitMq
             ILifetimeScope lifetimeScope,
             string brokerName,
             ILogger<EventBusRabbitMqService> logger,
+            IServiceScopeFactory serviceScopeFactory,
             string queueName = null,
             int retryCount = 5,
             int preFetchCount = 1
@@ -49,6 +52,7 @@ namespace ErSoftDev.Framework.RabbitMq
             _brokerName = brokerName;
             _retryCount = retryCount;
             _preFetchCount = preFetchCount;
+            _serviceScopeFactory = serviceScopeFactory;
             _logger = logger;
             _lifetimeScope = lifetimeScope;
             _subsManager = subsManager;
@@ -114,6 +118,7 @@ namespace ErSoftDev.Framework.RabbitMq
 
             });
         }
+
         public void SubscribeDynamic<TH>(string eventName) where TH : IDynamicIntegrationEventHandler
         {
             DoInternalSubscription(eventName);
@@ -188,7 +193,7 @@ namespace ErSoftDev.Framework.RabbitMq
             var consumer = new EventingBasicConsumer(_consumerChannel);
             consumer.Received += ProcessEvent;
             _consumerChannel.BasicRecover(true);
-            _consumerChannel.BasicConsume(_queueName, false, consumer);
+            _consumerChannel.BasicConsume(_queueName, true, consumer);
         }
         private async void ProcessEvent(object sender, BasicDeliverEventArgs e)
         {
@@ -242,11 +247,6 @@ namespace ErSoftDev.Framework.RabbitMq
             {
                 _logger.LogInformation("RabbitMqException message : {0}", exception.Message);
             }
-            finally
-            {
-                if (!e.Redelivered)
-                    _consumerChannel.BasicAck(e.DeliveryTag, false);
-            }
         }
 
         public int GetQueueMessageCount()
@@ -266,6 +266,7 @@ namespace ErSoftDev.Framework.RabbitMq
     {
         MessageQueue,
         Identity,
+        Wallex
     }
 
     public class BasicEvent : IntegrationEvent

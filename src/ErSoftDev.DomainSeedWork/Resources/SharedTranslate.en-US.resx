@@ -192,4 +192,7 @@
   <data name="ProviderNotAvailable" xml:space="preserve">
     <value>Provider is not available</value>
   </data>
+  <data name="UnhandledExceptionHappened" xml:space="preserve">
+    <value>Unhandled exception happen</value>
+  </data>
 </root>

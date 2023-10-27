@@ -268,6 +268,15 @@ namespace ErSoftDev.DomainSeedWork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to خطای پیش بینی نشده ای اتفاق افتاده است.
+        /// </summary>
+        internal static string UnhandledExceptionHappened {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionHappened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to وضعیت تراکنش نامشخص می باشد.
         /// </summary>
         internal static string Unknown {
