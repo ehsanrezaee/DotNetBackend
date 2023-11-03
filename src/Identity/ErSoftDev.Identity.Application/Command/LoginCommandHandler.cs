@@ -1,8 +1,10 @@
 ﻿using System.Security.Claims;
+using DotNetCore.CAP;
 using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Jwt;
+using ErSoftDev.Framework.RabbitMq;
 using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 using IdGen;
 using MediatR;
@@ -19,15 +21,17 @@ namespace ErSoftDev.Identity.Application.Command
         private readonly IOptions<AppSetting> _appSetting;
         private readonly IIdGenerator<long> _idGenerator;
         private readonly IStringLocalizer<SharedTranslate> _stringLocalizer;
+        private readonly ICapPublisher _capPublisher;
 
         public LoginCommandHandler(IJwtService jwtService, IUserRepository userRepository,
-            IOptions<AppSetting> appSetting, IIdGenerator<long> idGenerator, IStringLocalizer<SharedTranslate> stringLocalizer)
+            IOptions<AppSetting> appSetting, IIdGenerator<long> idGenerator, IStringLocalizer<SharedTranslate> stringLocalizer, ICapPublisher capPublisher)
         {
             _jwtService = jwtService;
             _userRepository = userRepository;
             _appSetting = appSetting;
             _idGenerator = idGenerator;
             _stringLocalizer = stringLocalizer;
+            _capPublisher = capPublisher;
         }
 
         public async Task<ApiResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -75,4 +79,8 @@ namespace ErSoftDev.Identity.Application.Command
             return tokenSecurity;
         }
     }
+
+
+
+
 }

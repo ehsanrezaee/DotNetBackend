@@ -60,7 +60,7 @@ namespace ErSoftDev.Framework.BaseApp
             app.UseRouting();
             app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
             app.UseCustomConsul(appsetting);
-            app.UseHangfireDashboard("/AppJobs");
+            app.UseCustomHangFireDashboard(appsetting);
             app.UseEndpoints(builder =>
             {
                 builder.MapGet("/",

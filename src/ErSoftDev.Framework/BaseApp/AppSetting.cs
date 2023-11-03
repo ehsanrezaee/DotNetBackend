@@ -68,6 +68,7 @@
         public string Username { get; set; }
         public string Password { get; set; }
         public int PreFetchCount { get; set; }
+        public int FailedRetryInterval { get; set; }
     }
 
     public class NotificationEmail

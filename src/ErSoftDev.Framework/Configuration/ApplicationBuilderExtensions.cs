@@ -2,6 +2,7 @@
 using Consul;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Middlewares;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
@@ -88,6 +89,15 @@ namespace ErSoftDev.Framework.Configuration
             });
 
             return app;
+        }
+
+        public static void UseCustomHangFireDashboard(this IApplicationBuilder app,
+            AppSetting appSetting)
+        {
+            if (appSetting.Hangfire is null)
+                return;
+
+            app.UseHangfireDashboard("/AppJobs");
         }
     }
 }
