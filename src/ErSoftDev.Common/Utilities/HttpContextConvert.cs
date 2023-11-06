@@ -7,13 +7,9 @@ namespace ErSoftDev.Common.Utilities
     public class HttpContentConvert : StringContent
     {
         public HttpContentConvert(object obj) :
-            base(
-                JsonConvert.SerializeObject(obj,
-                    new JsonSerializerSettings()
-                    {
-                        ContractResolver =
-                            new DefaultContractResolver() { NamingStrategy = new CamelCaseNamingStrategy() }
-                    }), Encoding.UTF8, "application/json")
+            base(JsonConvert.SerializeObject(obj,
+                    new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
+                Encoding.UTF8, "multipart/form-data")
         {
         }
     }
