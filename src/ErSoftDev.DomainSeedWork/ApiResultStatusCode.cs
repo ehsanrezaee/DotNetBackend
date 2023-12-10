@@ -31,5 +31,6 @@
         SecurityStampTokenIsNotValid = 20,
         ProviderNotAvailable = 21,
         UnhandledExceptionHappened = 22,
+        ProcessingIsInProgress = 23
     }
 }

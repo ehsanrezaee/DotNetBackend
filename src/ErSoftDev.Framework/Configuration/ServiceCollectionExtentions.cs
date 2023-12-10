@@ -307,7 +307,7 @@ namespace ErSoftDev.Framework.Configuration
                 return;
 
             services.AddHangfire(config =>
-                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseDefaultTypeSerializer()
                     .UseSqlServerStorage(appSetting.ConnectionString, new SqlServerStorageOptions

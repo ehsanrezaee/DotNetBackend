@@ -97,7 +97,7 @@ namespace ErSoftDev.Framework.Configuration
             if (appSetting.Hangfire is null)
                 return;
 
-            app.UseHangfireDashboard("/AppJobs");
+            app.UseHangfireDashboard("/jobs");
         }
     }
 }

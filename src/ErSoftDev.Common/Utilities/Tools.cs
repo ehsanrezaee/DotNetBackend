@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Microsoft.Extensions.DependencyModel;
+using SixLabors.ImageSharp;
 
 namespace ErSoftDev.Common.Utilities
 {
@@ -21,6 +22,9 @@ namespace ErSoftDev.Common.Utilities
             {
                 try
                 {
+                    if (assembly.FullName == "Microsoft.Data.SqlClient")
+                        continue;
+
                     res.Add(Assembly.Load(assembly.FullName));
                 }
                 catch (Exception e)

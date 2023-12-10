@@ -195,4 +195,7 @@
   <data name="UnhandledExceptionHappened" xml:space="preserve">
     <value>خطای پیش بینی نشده ای اتفاق افتاده است</value>
   </data>
+  <data name="ProcessingIsInProgress" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
