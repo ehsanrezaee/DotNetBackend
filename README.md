@@ -3,7 +3,7 @@ ErSoftDev backend comprehensive solution.
 By this solution you can add any microService to handle part of any commerces.
 
 Brief descriptions : 
-- .Net 7
+- .Net 8
 - c#
 - Architucture style : micorservice 
 - Architucture pattern(code design) : DDD
