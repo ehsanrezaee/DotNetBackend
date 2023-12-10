@@ -151,6 +151,15 @@ namespace ErSoftDev.DomainSeedWork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ProcessingIsInProgress {
+            get {
+                return ResourceManager.GetString("ProcessingIsInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to سرویس دهنده در دسترسی نمی باشد.
         /// </summary>
         internal static string ProviderNotAvailable {

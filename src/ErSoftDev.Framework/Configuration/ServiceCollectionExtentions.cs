@@ -307,7 +307,7 @@ namespace ErSoftDev.Framework.Configuration
                 return;
 
             services.AddHangfire(config =>
-                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseDefaultTypeSerializer()
                     .UseSqlServerStorage(appSetting.ConnectionString, new SqlServerStorageOptions
@@ -349,7 +349,6 @@ namespace ErSoftDev.Framework.Configuration
 
             serviceCollection.AddCap(options =>
             {
-                //options.UseEntityFramework<BaseDbContext>();
                 options.UseSqlServer(appSetting.ConnectionString);
                 options.UseDashboard(path => path.PathMatch = "/cap-dashboard");
                 options.UseRabbitMQ(options =>
@@ -364,6 +363,7 @@ namespace ErSoftDev.Framework.Configuration
                     };
                 });
                 options.FailedRetryCount = appSetting.EventBusRabbitMq.TryCount;
+                options.FailedRetryInterval = appSetting.EventBusRabbitMq.FailedRetryInterval;
                 //options.FailedThresholdCallback=SendEmailOrSms()
             });
         }
