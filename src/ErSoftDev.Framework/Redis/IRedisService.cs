@@ -78,5 +78,8 @@ namespace ErSoftDev.Framework.Redis
         /// <param name="flags">The flags to use for this operation.</param>
         /// <returns>True if the key was removed.</returns>
         Task<bool> DeleteWithLikeAsync(string key, CommandFlags flags = CommandFlags.None);
+
+        Task<T> AddOrUpdateAndGetAsync<T>(string key, T value, long expireTimeSecond = 60,
+            CommandFlags flags = CommandFlags.None);
     }
 }

@@ -217,6 +217,34 @@ namespace ErSoftDev.Framework.Redis
         }
 
         /// <summary>
+        /// Atomically sets key to value and returns the previous value (if any) stored at
+        /// </summary>
+        /// <param name="key">The key of the string.</param>
+        /// <param name="value">Generic class that convert to json</param>
+        /// <param name="expireTimeSecond">The exactly second time</param>
+        /// <param name="flags">The flags to use for this operation.</param>
+        /// <returns>True if the string was set, false otherwise.</returns>
+        public async Task<T> AddOrUpdateAndGetAsync<T>(string key, T value, long expireTimeSecond = 60,
+            CommandFlags flags = CommandFlags.None)
+        {
+            try
+            {
+                var result = await _db.StringSetAndGetAsync(_clientName + ":" + key,
+                    JsonConvert.SerializeObject(value, Formatting.Indented,
+                        new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }),
+                    TimeSpan.FromSeconds(expireTimeSecond), When.Always,
+                    flags);
+                return result.ToString() == null ? default : JsonConvert.DeserializeObject<T>(result);
+            }
+            catch (Exception e)
+            {
+                _logger.LogInformation("RedisAddOrUpdateAsync<T>", "Exception happen",
+                    new { _appSetting.Value.Redis.ClientName, e.Message });
+                return default;
+            }
+        }
+
+        /// <summary>
         /// Get the value of key. If the key does not exist the special value nil is returned. An error is returned if the value stored at key is not a string, because GET only handles string values.
         /// </summary>
         /// <param name="key">The key of the string.</param>
