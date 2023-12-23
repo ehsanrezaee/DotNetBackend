@@ -8,53 +8,23 @@ namespace ErSoftDev.Framework.Redis
         /// Set key to hold the string value. If key already holds a value, it is overwritten, regardless of its type.
         /// </summary>
         /// <param name="key">The key of the string.</param>
-        /// <param name="value">The value to set.</param>
-        /// <param name="expiry">The expiry to set.</param>
-        /// <param name="flags">The flags to use for this operation.</param>
-        /// <returns>True if the string was set, false otherwise.</returns>
-        Task<bool> AddOrUpdateAsync(string key, string value,
-            ExpiryTime expiry = ExpiryTime.TenMinute, CommandFlags flags = CommandFlags.None);
-
-
-        /// <summary>
-        /// Set key to hold the string value for exactly second time. If key already holds a value, it is overwritten, regardless of its type.
-        /// </summary>
-        /// <param name="key">The key of the string.</param>
-        /// <param name="value">The value to set.</param>
-        /// <param name="expireTimeSecond">The exactly second time</param>
-        /// <param name="flags">The flags to use for this operation.</param>
-        /// <returns>True if the string was set, false otherwise.</returns>
-        Task<bool> AddOrUpdateAsync(string key, string value,
-            long expireTimeSecond = 60L, CommandFlags flags = CommandFlags.None);
-
-        /// <summary>
-        /// Set key to hold the string value. If key already holds a value, it is overwritten, regardless of its type.
-        /// </summary>
-        /// <param name="key">The key of the string.</param>
         /// <param name="value">Generic class that convert to json</param>
-        /// <param name="expiry">The expiry to set.</param>
+        /// <param name="expiry">expire timeSpan</param>
         /// <param name="flags">The flags to use for this operation.</param>
         /// <returns>True if the string was set, false otherwise.</returns>
-        Task<bool> AddOrUpdateAsync<T>(string key, T value, ExpiryTime expiry = ExpiryTime.TenMinute,
+        Task<bool> AddOrUpdateAsync<T>(string key, T value, TimeSpan expiry,
             CommandFlags flags = CommandFlags.None);
 
         /// <summary>
-        /// Set key to hold the string value. If key already holds a value, it is overwritten, regardless of its type.
+        /// Atomically sets key to value and returns the previous value (if any) stored at
         /// </summary>
         /// <param name="key">The key of the string.</param>
+        /// /// <param name="expiry">expire timeSpan</param>
         /// <param name="value">Generic class that convert to json</param>
-        /// <param name="expireTimeSecond">The exactly second time</param>
         /// <param name="flags">The flags to use for this operation.</param>
         /// <returns>True if the string was set, false otherwise.</returns>
-        Task<bool> AddOrUpdateAsync<T>(string key, T value, long expireTimeSecond = 60,
+        Task<T> AddOrUpdateAndGetAsync<T>(string key, T value, TimeSpan expiry,
             CommandFlags flags = CommandFlags.None);
-
-        /// <summary>
-        /// Get the value of key. If the key does not exist the special value nil is returned. An error is returned if the value stored at key is not a string, because GET only handles string values.
-        /// </summary>
-        /// <param name="key">The key of the string.</param>
-        /// <returns>The value of key, or nil when key does not exist.</returns>
-        Task<string> GetAsync(string key);
 
         /// <summary>
         /// Get the T class value of key. If the key does not exist the special value nil is returned. An error is returned if the value stored at key is not a string, because GET only handles string values.
@@ -78,8 +48,5 @@ namespace ErSoftDev.Framework.Redis
         /// <param name="flags">The flags to use for this operation.</param>
         /// <returns>True if the key was removed.</returns>
         Task<bool> DeleteWithLikeAsync(string key, CommandFlags flags = CommandFlags.None);
-
-        Task<T> AddOrUpdateAndGetAsync<T>(string key, T value, long expireTimeSecond = 60,
-            CommandFlags flags = CommandFlags.None);
     }
 }

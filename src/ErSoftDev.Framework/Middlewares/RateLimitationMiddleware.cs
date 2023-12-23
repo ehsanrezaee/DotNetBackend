@@ -35,7 +35,7 @@ namespace ErSoftDev.Framework.Middlewares
                 context.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
                 return;
             }
-            await _redisService.AddOrUpdateAsync(key, decorator, ExpiryTime.TenMinute);
+            await _redisService.AddOrUpdateAsync(key, decorator, TimeSpan.FromMinutes(10));
             await _next(context);
         }
 
