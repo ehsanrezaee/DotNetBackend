@@ -5,7 +5,9 @@ using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Jwt;
 using ErSoftDev.Framework.RabbitMq;
+using ErSoftDev.Framework.Redis;
 using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
+using ErSoftDev.Identity.Domain.SeedWorks;
 using IdGen;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -21,21 +23,26 @@ namespace ErSoftDev.Identity.Application.Command
         private readonly IOptions<AppSetting> _appSetting;
         private readonly IIdGenerator<long> _idGenerator;
         private readonly IStringLocalizer<SharedTranslate> _stringLocalizer;
-        private readonly ICapPublisher _capPublisher;
+        private readonly IRedisService _redisService;
 
         public LoginCommandHandler(IJwtService jwtService, IUserRepository userRepository,
-            IOptions<AppSetting> appSetting, IIdGenerator<long> idGenerator, IStringLocalizer<SharedTranslate> stringLocalizer, ICapPublisher capPublisher)
+            IOptions<AppSetting> appSetting, IIdGenerator<long> idGenerator,
+            IStringLocalizer<SharedTranslate> stringLocalizer, IRedisService redisService)
         {
             _jwtService = jwtService;
             _userRepository = userRepository;
             _appSetting = appSetting;
             _idGenerator = idGenerator;
             _stringLocalizer = stringLocalizer;
-            _capPublisher = capPublisher;
+            _redisService = redisService;
         }
 
         public async Task<ApiResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
+            var loginFromCache = await _redisService.GetAsync<LoginResponse?>(CacheKey.Login + ":" + request.Username);
+            if (loginFromCache != null)
+                return new ApiResult<LoginResponse>(_stringLocalizer, ApiResultStatusCode.Success, loginFromCache);
+
             var user = await _userRepository.GetByUsernameAndPassword(request.Username,
                 SecurityHelper.GetMd5(request.Password), cancellationToken);
             if (user is null)
@@ -63,6 +70,10 @@ namespace ErSoftDev.Identity.Application.Command
                 RefreshToken = refreshToken,
                 RefreshTokenExpiry = refreshTokenExpiry,
             };
+
+            await _redisService.AddOrUpdateAsync(CacheKey.Login.ToString() + ":" + request.Username, response,
+                token.TokenExpiry.AddMinutes(-1).TimeOfDay);
+
             return new ApiResult<LoginResponse>(_stringLocalizer, ApiResultStatusCode.Success, response);
         }
 
