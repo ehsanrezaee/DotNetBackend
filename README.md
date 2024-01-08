@@ -17,6 +17,7 @@ Brief descriptions :
 - Use redis bus 
 - Use jaeger as log stream
 - Use hangfire for background tasks and cron jobs
+- Use health check classes and health check UI to monitoring miroservices
 - Support multilanguage response
 - Use multi environment applications and apigateway
 - Standard API Resulting
