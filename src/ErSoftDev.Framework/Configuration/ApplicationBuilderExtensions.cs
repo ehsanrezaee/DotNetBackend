@@ -3,7 +3,9 @@ using Consul;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Middlewares;
 using Hangfire;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
@@ -98,6 +100,14 @@ namespace ErSoftDev.Framework.Configuration
                 return;
 
             app.UseHangfireDashboard("/jobs");
+        }
+
+        public static void UseCustomHealthCheck(this IApplicationBuilder app)
+        {
+            app.UseHealthChecks("/health", new HealthCheckOptions()
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
         }
     }
 }

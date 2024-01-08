@@ -1,0 +1,6 @@
+@ErSoftDev.HealthCheck_HostAddress = http://localhost:5186
+
+GET {{ErSoftDev.HealthCheck_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

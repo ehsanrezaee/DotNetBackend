@@ -16,7 +16,7 @@ COPY ["src/ErSoftDev.DomainSeedWork/ErSoftDev.DomainSeedWork.csproj", "src/ErSof
 COPY ["src/Identity/ErSoftDev.Identity.Infrastructure/ErSoftDev.Identity.Infrastructure.csproj", "src/Identity/ErSoftDev.Identity.Infrastructure/"]
 COPY ["src/ErSoftDev.Framework/ErSoftDev.Framework.csproj", "src/ErSoftDev.Framework/"]
 COPY ["src/ErSoftDev.Common/ErSoftDev.Common.csproj", "src/ErSoftDev.Common/"]
-RUN dotnet restore "./src/Identity/ErSoftDev.Identity.EndPoint/./ErSoftDev.Identity.EndPoint.csproj"
+RUN dotnet restore "./src/Identity/ErSoftDev.Identity.EndPoint/ErSoftDev.Identity.EndPoint.csproj"
 COPY . .
 WORKDIR "/src/src/Identity/ErSoftDev.Identity.EndPoint"
 RUN dotnet build "./ErSoftDev.Identity.EndPoint.csproj" -c $BUILD_CONFIGURATION -o /app/build

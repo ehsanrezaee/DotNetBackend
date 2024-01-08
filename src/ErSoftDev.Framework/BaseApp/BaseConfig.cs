@@ -2,8 +2,10 @@
 using ErSoftDev.Framework.Middlewares;
 using ErSoftDev.Framework.RabbitMq;
 using Hangfire;
+using HealthChecks.UI.Client;
 using IdGen.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,7 @@ namespace ErSoftDev.Framework.BaseApp
         {
             Configuration = configuration;
             _configKey = $"{nameof(AppSetting)}{environment.EnvironmentName}";
-            _appSetting = configuration.GetSection(_configKey).Get<AppSetting>();
+            _appSetting = configuration.GetSection(_configKey).Get<AppSetting>()!;
         }
 
         public virtual void ConfigureServices(IServiceCollection services)
@@ -45,14 +47,16 @@ namespace ErSoftDev.Framework.BaseApp
             services.AddCustomConsul(_appSetting);
             services.AddCustomIdGenerator();
             services.AddCustomCap(_appSetting);
+            services.AddHealthChecks().AddCustomCheck();
         }
 
-        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, /*IOptions<AppSetting>*/ AppSetting appsetting)
+        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppSetting appsetting)
         {
             app.UseCustomRequestLocalization();
             app.UseCustomExceptionMiddleware();
             app.UseHstsNotInDevelopment(env);
             app.UseHttpsRedirection();
+            app.UseCustomHealthCheck();
             app.UseCustomSwaggerUi(_appSetting.Swagger);
             app.UseAuthentication();
             app.UseMvc();

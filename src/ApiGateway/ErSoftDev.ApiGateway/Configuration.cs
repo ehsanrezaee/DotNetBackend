@@ -1,7 +1,10 @@
-﻿using ErSoftDev.ApiGateway.Extensions;
+﻿using ErSoftDev.ApiGateway.Application.HealthChecks;
+using ErSoftDev.ApiGateway.Extensions;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Configuration;
 using ErSoftDev.Identity.EndPoint.Grpc.Protos;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Polly;
@@ -36,6 +39,7 @@ namespace ErSoftDev.ApiGateway
             services.AddCustomApiGatewayJwtAuthentication(_appSetting.Jwt);
             services.AddCustomLocalization();
             services.AddJaeger(_appSetting);
+            services.AddHealthChecks().AddCheck<IdentityGrpcServiceHealthCheck>("IdentityGrpcServiceHealthCheck");
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppSetting appsetting)
@@ -45,13 +49,14 @@ namespace ErSoftDev.ApiGateway
             app.UseCustomExceptionMiddleware();
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseHealthChecks("/health", new HealthCheckOptions()
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
             app.UseRouting();
             app.UseAuthorization();
-            app.UseSwaggerForOcelotUI(options =>
-            {
-                options.PathToSwaggerGenerator = "/swagger/docs";
-
-            }).UseOcelot().Wait();
+            app.UseSwaggerForOcelotUI(options => { options.PathToSwaggerGenerator = "/swagger/docs"; }).UseOcelot()
+                .Wait();
             app.UseEndpoints(builder =>
             {
                 builder.MapGet("/",

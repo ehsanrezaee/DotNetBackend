@@ -8,7 +8,6 @@
 
 	<ItemGroup>
 		<Folder Include="DomainEventHandlers\" />
-		<Folder Include="IntegrationEvents\" />
 	</ItemGroup>
 
 	<ItemGroup>

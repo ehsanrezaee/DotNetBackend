@@ -1,6 +1,4 @@
-﻿using ErSoftDev.Common.Utilities;
-using ErSoftDev.DomainSeedWork;
-using ErSoftDev.Framework.Configuration;
+﻿using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.Grpc;
 using ErSoftDev.Identity.Application.Queries;
 using ErSoftDev.Identity.EndPoint.Grpc.Protos;
