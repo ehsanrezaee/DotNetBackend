@@ -1,6 +1,4 @@
-﻿using ErSoftDev.Common.Utilities;
-using ErSoftDev.DomainSeedWork;
-using ErSoftDev.Framework.Configuration;
+﻿using ErSoftDev.Framework.Configuration;
 using ErSoftDev.Identity.EndPoint.Grpc.Protos;
 
 namespace ErSoftDev.ApiGateway.Infrastructure.ServiceProviderConfiguration.Identity

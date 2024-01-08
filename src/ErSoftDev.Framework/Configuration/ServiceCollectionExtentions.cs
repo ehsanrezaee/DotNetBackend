@@ -33,7 +33,9 @@ using ErSoftDev.Framework.BaseApp;
 using Consul;
 using IdGen.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using TypeExtensions = Swashbuckle.AspNetCore.SwaggerGen.TypeExtensions;
+using Mapster.Adapters;
 
 namespace ErSoftDev.Framework.Configuration
 {
