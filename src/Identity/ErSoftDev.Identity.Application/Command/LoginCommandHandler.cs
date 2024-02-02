@@ -39,7 +39,9 @@ namespace ErSoftDev.Identity.Application.Command
 
         public async Task<ApiResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var loginFromCache = await _redisService.GetAsync<LoginResponse?>(CacheKey.Login + ":" + request.Username);
+            var loginFromCache = await _redisService.GetAsync<LoginResponse?>(CacheKey.Login + ":" + request.Username +
+                                                                              ":" + SecurityHelper.GetMd5(
+                                                                                  request.Password));
             if (loginFromCache != null)
                 return new ApiResult<LoginResponse>(_stringLocalizer, ApiResultStatusCode.Success, loginFromCache);
 
@@ -71,7 +73,8 @@ namespace ErSoftDev.Identity.Application.Command
                 RefreshTokenExpiry = refreshTokenExpiry,
             };
 
-            await _redisService.AddOrUpdateAsync(CacheKey.Login + ":" + request.Username, response,
+            await _redisService.AddOrUpdateAsync(
+                CacheKey.Login + ":" + request.Username + ":" + SecurityHelper.GetMd5(request.Password), response,
                 TimeSpan.FromMinutes((token.TokenExpiry - DateTime.Now).TotalMinutes - 1));
 
             return new ApiResult<LoginResponse>(_stringLocalizer, ApiResultStatusCode.Success, response);
