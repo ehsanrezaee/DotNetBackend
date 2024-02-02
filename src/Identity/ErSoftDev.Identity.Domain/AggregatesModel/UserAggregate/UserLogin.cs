@@ -11,7 +11,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
         public string? FcmToken { get; private set; }
         public string? Browser { get; private set; }
 
-        public User User { get; set; }
+        public User User { get; private set; }
 
         private UserLogin()
         {

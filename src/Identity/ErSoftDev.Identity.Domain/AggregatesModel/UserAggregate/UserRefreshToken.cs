@@ -14,7 +14,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
         public bool IsRevoke { get; private set; }
         public DateTime ExpireAt { get; private set; }
 
-        public User User { get; set; }
+        public User User { get; private set; }
 
 
 
