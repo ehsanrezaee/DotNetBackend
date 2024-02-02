@@ -106,6 +106,15 @@ namespace ErSoftDev.DomainSeedWork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to آیدنتیتی سرور در دسترس نمی باشد.
+        /// </summary>
+        internal static string IdentityServerIsNotAvailable {
+            get {
+                return ResourceManager.GetString("IdentityServerIsNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to خطای منطقی رخ داده است.
         /// </summary>
         internal static string LogicError {

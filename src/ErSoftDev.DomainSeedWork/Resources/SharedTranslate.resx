@@ -198,4 +198,7 @@
   <data name="ProcessingIsInProgress" xml:space="preserve">
     <value></value>
   </data>
+  <data name="IdentityServerIsNotAvailable" xml:space="preserve">
+    <value>آیدنتیتی سرور در دسترس نمی باشد</value>
+  </data>
 </root>

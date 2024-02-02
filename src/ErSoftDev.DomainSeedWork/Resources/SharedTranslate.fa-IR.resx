@@ -195,4 +195,7 @@
   <data name="UnhandledExceptionHappened" xml:space="preserve">
     <value>خطای پیش بینی نشده ای اتفاق افتاده است</value>
   </data>
+  <data name="IdentityServerIsNotAvailable" xml:space="preserve">
+    <value>آیدنتیتی سرور در دسترس نمی باشد</value>
+  </data>
 </root>
