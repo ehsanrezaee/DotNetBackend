@@ -71,8 +71,8 @@ namespace ErSoftDev.Identity.Application.Command
                 RefreshTokenExpiry = refreshTokenExpiry,
             };
 
-            await _redisService.AddOrUpdateAsync(CacheKey.Login.ToString() + ":" + request.Username, response,
-                token.TokenExpiry.AddMinutes(-1).TimeOfDay);
+            await _redisService.AddOrUpdateAsync(CacheKey.Login + ":" + request.Username, response,
+                TimeSpan.FromMinutes((token.TokenExpiry - DateTime.Now).TotalMinutes - 1));
 
             return new ApiResult<LoginResponse>(_stringLocalizer, ApiResultStatusCode.Success, response);
         }

@@ -195,4 +195,7 @@
   <data name="UnhandledExceptionHappened" xml:space="preserve">
     <value>Unhandled exception happen</value>
   </data>
+  <data name="IdentityServerIsNotAvailable" xml:space="preserve">
+    <value>Identity server is not available</value>
+  </data>
 </root>

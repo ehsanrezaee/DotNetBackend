@@ -6,6 +6,7 @@ using ErSoftDev.ApiGateway.Infrastructure.ServiceProviderConfiguration.Identity;
 using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
+using Grpc.Core;
 using Microsoft.AspNetCore.Identity;
 
 namespace ErSoftDev.ApiGateway.Extensions
@@ -53,6 +54,10 @@ namespace ErSoftDev.ApiGateway.Extensions
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
                                 ApiResultErrorCode.TokenIsExpired);
+
+                        if (context.Exception.GetType() == typeof(RpcException))
+                            throw new AppException(new Exception(), ApiResultStatusCode.Failed,
+                                ApiResultErrorCode.IdentityServerIsNotAvailable);
 
                         if (context.Exception.GetType() != typeof(AppException))
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
