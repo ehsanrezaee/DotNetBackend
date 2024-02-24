@@ -68,7 +68,7 @@ namespace ErSoftDev.Identity.Infrastructure.Repositories
 
         public async Task<User?> GetUserBySecurityStampToken(string securityStampToken, CancellationToken cancellationToken)
         {
-            return await _identityDbContext.Users.FirstOrDefaultAsync(
+            return await _identityDbContext.Users.AsNoTracking().FirstOrDefaultAsync(
                 user => user.SecurityStampToken == securityStampToken, cancellationToken);
         }
     }

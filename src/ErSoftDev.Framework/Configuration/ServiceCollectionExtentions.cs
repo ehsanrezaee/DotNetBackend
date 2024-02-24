@@ -31,6 +31,8 @@ using OpenTracing.Contrib.NetCore.Configuration;
 using StackExchange.Redis;
 using ErSoftDev.Framework.BaseApp;
 using Consul;
+using EventBus.Base.Standard;
+using EventBus.Base.Standard.Configuration;
 using IdGen.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -369,5 +371,17 @@ namespace ErSoftDev.Framework.Configuration
                 //options.FailedThresholdCallback=SendEmailOrSms()
             });
         }
+
+        //public static void AddCustomEventBusHandling(this IServiceCollection serviceCollection)
+        //{
+        //    var assemblies = Tools.GetAllAssemblies();
+        //    var integrationEventHandlers =
+        //        assemblies
+        //            .SelectMany(a => a.DefinedTypes)
+        //            .Where(t => typeof(IIntegrationEventHandler).IsAssignableFrom(t) && !t.IsInterface && t.IsClass &&
+        //                        t.IsPublic);
+
+        //    serviceCollection.AddEventBusHandling(integrationEventHandlers);
+        //}
     }
 }
