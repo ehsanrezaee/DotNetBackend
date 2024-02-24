@@ -1,11 +1,9 @@
 ﻿using ErSoftDev.Framework.Configuration;
 using ErSoftDev.Framework.Middlewares;
 using ErSoftDev.Framework.RabbitMq;
+using EventBus.Base.Standard.Configuration;
 using Hangfire;
-using HealthChecks.UI.Client;
-using IdGen.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
