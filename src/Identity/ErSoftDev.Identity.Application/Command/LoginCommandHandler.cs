@@ -1,10 +1,9 @@
 ﻿using System.Security.Claims;
-using DotNetCore.CAP;
 using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Jwt;
-using ErSoftDev.Framework.RabbitMq;
+using ErSoftDev.Framework.Log;
 using ErSoftDev.Framework.Redis;
 using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 using ErSoftDev.Identity.Domain.SeedWorks;

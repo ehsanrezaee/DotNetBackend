@@ -15,6 +15,7 @@
         public Hangfire? Hangfire { get; set; }
         public Jaeger? Jaeger { get; set; }
         public ServiceDiscoveryConfig? ServiceDiscoveryConfig { get; set; }
+        public ElasticSearch ElasticSearch { get; set; }
     }
 
     public class Jaeger
@@ -25,8 +26,9 @@
     }
     public class Logging
     {
-        public string AllLevelLog { get; set; }
         public string LogLevel { get; set; }
+        public string Microsoft { get; set; }
+        public string System { get; set; }
     }
 
     public class Jwt
@@ -113,5 +115,10 @@
         public string NameOfService { get; set; }
         public string IdOfService { get; set; }
 
+    }
+
+    public class ElasticSearch
+    {
+        public string Url { get; set; }
     }
 }

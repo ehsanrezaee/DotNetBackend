@@ -22,7 +22,6 @@ using Jaeger.Senders.Thrift;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OpenTracing;
@@ -31,13 +30,12 @@ using OpenTracing.Contrib.NetCore.Configuration;
 using StackExchange.Redis;
 using ErSoftDev.Framework.BaseApp;
 using Consul;
-using EventBus.Base.Standard;
-using EventBus.Base.Standard.Configuration;
 using IdGen.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using TypeExtensions = Swashbuckle.AspNetCore.SwaggerGen.TypeExtensions;
-using Mapster.Adapters;
+using Serilog.Events;
+using Serilog;
+using Serilog.Exceptions;
+using Serilog.Sinks.Elasticsearch;
+using Microsoft.Extensions.Configuration;
 
 namespace ErSoftDev.Framework.Configuration
 {
@@ -383,5 +381,52 @@ namespace ErSoftDev.Framework.Configuration
 
         //    serviceCollection.AddEventBusHandling(integrationEventHandlers);
         //}
+
+        public static void AddCustomLogging(this IServiceCollection serviceCollection, AppSetting appSetting,
+            IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        {
+            var elasticSearchSinkOption = new ElasticsearchSinkOptions(new Uri(appSetting.ElasticSearch.Url))
+            {
+                AutoRegisterTemplate = true,
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                IndexFormat =
+                    $"{Assembly.GetEntryAssembly()?.GetName().Name?.ToLower().Replace('.', '-')}-{webHostEnvironment.EnvironmentName}-{DateTime.Now:yyyy-MM}",
+                BatchAction = ElasticOpType.Create,
+                NumberOfReplicas = 1,
+                NumberOfShards = 2
+            };
+
+            Serilog.Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
+                .MinimumLevel.Override("Microsoft", GetLogLevel(appSetting.Logging.Microsoft))
+                .MinimumLevel.Override("System", GetLogLevel(appSetting.Logging.System))
+                .MinimumLevel.Override("DotNetCore.CAP", LogEventLevel.Error)
+                .MinimumLevel.Override("Hangfire", LogEventLevel.Error)
+                .MinimumLevel.Override("ErSoftDev", LogEventLevel.Verbose)
+#if DEBUG
+                .WriteTo.Console()
+#endif
+                .WriteTo.Elasticsearch(elasticSearchSinkOption)
+                .Enrich.WithProperty("Environment", webHostEnvironment.EnvironmentName)
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+
+            serviceCollection.AddSerilog();
+        }
+
+        private static LogEventLevel GetLogLevel(string appSettingLogLevel)
+        {
+            return appSettingLogLevel.ToLower() switch
+            {
+                "trace" => LogEventLevel.Verbose,
+                "debug" => LogEventLevel.Debug,
+                "information" => LogEventLevel.Information,
+                "warning" => LogEventLevel.Warning,
+                "error" => LogEventLevel.Error,
+                "fatal" => LogEventLevel.Fatal,
+                _ => LogEventLevel.Fatal
+            };
+        }
     }
 }
