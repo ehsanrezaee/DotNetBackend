@@ -1,7 +1,6 @@
 ﻿using ErSoftDev.Framework.Configuration;
 using ErSoftDev.Framework.Middlewares;
 using ErSoftDev.Framework.RabbitMq;
-using EventBus.Base.Standard.Configuration;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +24,7 @@ namespace ErSoftDev.Framework.BaseApp
             _appSetting = configuration.GetSection(_configKey).Get<AppSetting>()!;
         }
 
-        public virtual void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services, IWebHostEnvironment environment)
         {
             services.AddCustomMediatr();
             services.AddGrpc();
@@ -46,9 +45,10 @@ namespace ErSoftDev.Framework.BaseApp
             services.AddCustomIdGenerator();
             services.AddCustomCap(_appSetting);
             services.AddHealthChecks().AddCustomCheck();
+            services.AddCustomLogging(_appSetting, Configuration, environment);
         }
 
-        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppSetting appsetting)
+        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppSetting appSetting)
         {
             app.UseCustomRequestLocalization();
             app.UseCustomExceptionMiddleware();
@@ -61,12 +61,13 @@ namespace ErSoftDev.Framework.BaseApp
             app.UseCustomStaticFile();
             app.UseRouting();
             app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
-            app.UseCustomConsul(appsetting);
-            app.UseCustomHangFireDashboard(appsetting);
+            app.UseCustomConsul(appSetting);
+            app.UseCustomHangFireDashboard(appSetting);
+
             app.UseEndpoints(builder =>
             {
                 builder.MapGet("/",
-                    async context => { await context.Response.WriteAsync(appsetting./*Value.*/WelcomeNote ?? ""); });
+                    async context => { await context.Response.WriteAsync(appSetting.WelcomeNote ?? ""); });
                 builder.MapControllers();
                 builder.UseGrpcEndPoint();
                 builder.MapHangfireDashboard();

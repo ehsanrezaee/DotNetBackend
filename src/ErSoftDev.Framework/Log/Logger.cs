@@ -1,9 +1,10 @@
 ﻿using ErSoftDev.Framework.BaseApp;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using NLog;
 using OpenTracing;
 using OpenTracing.Tag;
+using LogLevel = NLog.LogLevel;
 
 namespace ErSoftDev.Framework.Log
 {
@@ -11,11 +12,13 @@ namespace ErSoftDev.Framework.Log
     {
         private readonly ITracer _tracer;
         private readonly IOptions<AppSetting> _appSetting;
+        private readonly Microsoft.Extensions.Logging.ILogger<TObject> _microsoftLogger;
 
-        public Logger(ITracer tracer, IOptions<AppSetting> appSetting)
+        public Logger(ITracer tracer, IOptions<AppSetting> appSetting, Microsoft.Extensions.Logging.ILogger<TObject> microsoftLogger)
         {
             _tracer = tracer;
             _appSetting = appSetting;
+            _microsoftLogger = microsoftLogger;
         }
 
         #region Trace
@@ -26,6 +29,7 @@ namespace ErSoftDev.Framework.Log
         }
         public void LogTrace(string message, Dictionary<string, string> tags)
         {
+
             CreateMainLog(message, LogLevel.Trace, tags);
         }
         public void LogTrace<T>(string message, T obj)
@@ -175,40 +179,51 @@ namespace ErSoftDev.Framework.Log
         private void CreateMainLog(string message, LogLevel logLevel, Dictionary<string, string>? tags = null)
         {
 
-            var logLevelFromAppSetting = _appSetting.Value.Logging.LogLevel;
-            switch (logLevelFromAppSetting.ToLower())
+            var logLevelFromAppSetting = _appSetting.Value.Logging.LogLevel.ToLower();
+            switch (logLevelFromAppSetting)
             {
                 case "trace":
+                    _microsoftLogger.LogTrace(message);
                     break;
 
                 case "debug":
-                    if (logLevel.Name is "trance")
+                    if (logLevel.Name.ToLower() is "trace")
                         return;
+
+                    _microsoftLogger.LogDebug(message);
                     break;
 
                 case "information":
-                    if (logLevel.Name is "debug" or "trance")
+                    if (logLevel.Name.ToLower() is "debug" or "trace")
                         return;
+
+                    _microsoftLogger.LogInformation(message);
                     break;
 
                 case "warning":
-                    if (logLevel.Name is "information" or "debug" or "trace")
+                    if (logLevel.Name.ToLower() is "info" or "debug" or "trace")
                         return;
+
+                    _microsoftLogger.LogWarning(message);
                     break;
 
                 case "error":
-                    if (logLevel.Name is "warning" or "information" or "debug" or "trace")
+                    if (logLevel.Name.ToLower() is "warning" or "info" or "debug" or "trace")
                         return;
                     break;
 
-                case "critical":
-                    if (logLevel.Name is "error" or "warning" or "information" or "debug" or "trace")
+                case "fatal":
+                    if (logLevel.Name.ToLower() is "error" or "warning" or "info" or "debug" or "trace")
                         return;
+
+                    _microsoftLogger.LogCritical(message);
                     break;
 
                 case "none":
                     return;
             }
+
+
 
             var current = _tracer
                 .BuildSpan(typeof(TObject).FullName?.Substring(
