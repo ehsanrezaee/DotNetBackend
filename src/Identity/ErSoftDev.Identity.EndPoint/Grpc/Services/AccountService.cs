@@ -24,9 +24,9 @@ namespace ErSoftDev.Identity.EndPoint.Grpc.Services
                 , context.CancellationToken);
 
             if (isSecurityStampTokenValid)
-                return new IsSecurityStampTokenResponseGrpc() { Status = (int)ApiResultStatusCode.Success };
+                return new IsSecurityStampTokenResponseGrpc() { Status = ApiResultStatusCode.Success.Id };
 
-            return new IsSecurityStampTokenResponseGrpc() { Status = (int)ApiResultStatusCode.Failed };
+            return new IsSecurityStampTokenResponseGrpc() { Status = ApiResultStatusCode.Failed.Id };
         }
     }
 }
