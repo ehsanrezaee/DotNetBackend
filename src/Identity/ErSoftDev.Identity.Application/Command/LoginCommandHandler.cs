@@ -47,7 +47,7 @@ namespace ErSoftDev.Identity.Application.Command
             var user = await _userRepository.GetByUsernameAndPassword(request.Username,
                 SecurityHelper.GetMd5(request.Password), cancellationToken);
             if (user is null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.UsernameOrPasswordIsNotCorrect);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.UsernameOrPasswordIsNotCorrect);
 
             var securityStampToken = Guid.NewGuid().ToString();
             var refreshTokenExpiry = DateTime.Now.AddSeconds(_appSetting.Value.Jwt.RefreshTokenExpirySecond);

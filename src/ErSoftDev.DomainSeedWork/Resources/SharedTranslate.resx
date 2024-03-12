@@ -177,9 +177,6 @@
   <data name="Unknown" xml:space="preserve">
     <value>وضعیت تراکنش نامشخص می باشد</value>
   </data>
-  <data name="UsernameOrPasswordIsNotCorrect" xml:space="preserve">
-    <value>نام کاربری یا رمز عبور اشتباه است</value>
-  </data>
   <data name="RequestHasNotToken" xml:space="preserve">
     <value>درخواست ارسال شده فاقد توکن می باشد</value>
   </data>
@@ -195,10 +192,13 @@
   <data name="UnhandledExceptionHappened" xml:space="preserve">
     <value>خطای پیش بینی نشده ای اتفاق افتاده است</value>
   </data>
-  <data name="ProcessingIsInProgress" xml:space="preserve">
-    <value></value>
-  </data>
   <data name="IdentityServerIsNotAvailable" xml:space="preserve">
     <value>آیدنتیتی سرور در دسترس نمی باشد</value>
+  </data>
+  <data name="AnUnexpectedErrorHasOccurred" xml:space="preserve">
+    <value>خطای پیش بینی نشده ای رخ داده است</value>
+  </data>
+  <data name="UsernameOrPasswordIsNotCorrect" xml:space="preserve">
+    <value>نام کاربری یا کلمه ی عبور صحیح نمی باشد</value>
   </data>
 </root>

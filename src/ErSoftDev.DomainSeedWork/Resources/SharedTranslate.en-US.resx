@@ -198,4 +198,7 @@
   <data name="IdentityServerIsNotAvailable" xml:space="preserve">
     <value>Identity server is not available</value>
   </data>
+  <data name="AnUnexpectedErrorHasOccurred" xml:space="preserve">
+    <value>An unexpected error has occurred</value>
+  </data>
 </root>

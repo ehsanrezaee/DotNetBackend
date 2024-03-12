@@ -79,6 +79,15 @@ namespace ErSoftDev.DomainSeedWork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to خطای پیش بینی نشده ای رخ داده است.
+        /// </summary>
+        internal static string AnUnexpectedErrorHasOccurred {
+            get {
+                return ResourceManager.GetString("AnUnexpectedErrorHasOccurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to یکی از پارامتر های ارسالی ایراد دارد.
         /// </summary>
         internal static string BadRequest {
@@ -156,15 +165,6 @@ namespace ErSoftDev.DomainSeedWork.Resources {
         internal static string PasswordsAreNotEqual {
             get {
                 return ResourceManager.GetString("PasswordsAreNotEqual", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string ProcessingIsInProgress {
-            get {
-                return ResourceManager.GetString("ProcessingIsInProgress", resourceCulture);
             }
         }
         
@@ -304,7 +304,7 @@ namespace ErSoftDev.DomainSeedWork.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to نام کاربری یا رمز عبور اشتباه است.
+        ///   Looks up a localized string similar to نام کاربری یا کلمه ی عبور صحیح نمی باشد.
         /// </summary>
         internal static string UsernameOrPasswordIsNotCorrect {
             get {

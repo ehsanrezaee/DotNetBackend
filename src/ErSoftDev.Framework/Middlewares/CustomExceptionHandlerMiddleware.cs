@@ -94,18 +94,17 @@ namespace ErSoftDev.Framework.Middlewares
                 httpContext.Response.ContentType = "Application/json";
 
                 await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(
-                    new ApiResult(_stringLocalizer, ex.ApiResultStatusCode, ex.ApiResultErrorCode, ex.Message),
+                    new ApiResult(_stringLocalizer, (ApiResultStatusCode)ex.ApiResultStatusCode, (ApiResultErrorCode)ex.ApiResultErrorCode, ex.Message),
                     new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
             }
             catch (Exception ex)
             {
-
                 _logger.LogFatal("ExceptionHandler", new { Exception = ex });
 
                 httpContext.Response.ContentType = "Application/json";
 
                 await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(
-                    new ApiResult(_stringLocalizer, ApiResultStatusCode.Unknown),
+                    new ApiResult(_stringLocalizer, ApiResultStatusCode.Failed, ApiResultErrorCode.AnUnexpectedErrorHasOccurred),
                     new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
             }
         }

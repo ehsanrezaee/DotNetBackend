@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using ErSoftDev.DomainSeedWork;
+using ErSoftDev.Identity.Domain.SeedWorks;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 {
@@ -50,7 +51,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
                     parameterValidation.ToString());
 
             if (password != checkPassword)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.PasswordsAreNotEqual);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.PasswordsAreNotEqual);
 
             Id = id;
             Firstname = firstname;
@@ -78,7 +79,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 
                 if (addressPropertiesAtLeastHasOneValue && addressPropertiesAtLeastHasOneNotValue)
                     throw new AppException(ApiResultStatusCode.Failed,
-                        ApiResultErrorCode.AllFieldsOfAddressMustBeFillOrNonOfFields);
+                        IdentityResultErrorCode.AllFieldsOfAddressMustBeFillOrNonOfFields);
             }
 
             Firstname = firstname ?? Firstname;
@@ -115,13 +116,13 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
             if (userRefreshToken is null)
                 throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
             if (userRefreshToken.IsActive == false)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.RefreshTokenIsDeActive);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.RefreshTokenIsDeActive);
             if (userRefreshToken.IsUse)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.RefreshTokenIsUsed);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.RefreshTokenIsUsed);
             if (userRefreshToken.IsRevoke)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.RefreshTokenIsRevoked);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.RefreshTokenIsRevoked);
             if (userRefreshToken.ExpireAt < DateTime.Now)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.RefreshTokenIsExpire);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.RefreshTokenIsExpire);
 
             userRefreshToken.UseRefreshToken();
         }
@@ -146,13 +147,13 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
             if (userRefreshToken is null)
                 throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
             if (userRefreshToken.IsActive == false)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.RefreshTokenIsDeActive);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.RefreshTokenIsDeActive);
             if (userRefreshToken.IsUse)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.RefreshTokenIsUsed);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.RefreshTokenIsUsed);
             if (userRefreshToken.IsRevoke)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.RefreshTokenIsRevoked);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.RefreshTokenIsRevoked);
             if (userRefreshToken.ExpireAt < DateTime.Now)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.RefreshTokenIsExpire);
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.RefreshTokenIsExpire);
 
             userRefreshToken.RevokeRefreshToken();
         }

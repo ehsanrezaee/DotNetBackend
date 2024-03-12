@@ -1,37 +1,32 @@
 ﻿namespace ErSoftDev.DomainSeedWork
 {
-    public enum ApiResultStatusCode
+    public class ApiResultStatusCode : Enumeration
     {
-        Success = 0,
-        Failed = 1,
-        Unknown = 2
+        public static ApiResultStatusCode Success => new(0, nameof(Success));
+        public static ApiResultStatusCode Failed => new(1, nameof(Failed));
+        public static ApiResultStatusCode Unknown => new(2, nameof(Unknown));
+        public ApiResultStatusCode(int id, string name) : base(id, name)
+        {
+        }
     }
 
-    public enum ApiResultErrorCode
+    public class ApiResultErrorCode : Enumeration
     {
-        NotFound = 1,
-        LogicError = 2,
-        AlreadyExists = 3,
-        ParametersAreNotValid = 4,
-        PasswordsAreNotEqual = 5,
-        AllFieldsOfAddressMustBeFillOrNonOfFields = 6,
-        UsernameOrPasswordIsNotCorrect = 7,
-        OneOfTheBrowserOrDeviceNameMustBeFill = 8,
-        RefreshTokenIsDeActive = 9,
-        RefreshTokenIsUsed = 10,
-        RefreshTokenIsRevoked = 11,
-        RefreshTokenIsExpire = 12,
-        TokenIsExpired = 13,
-        TokenHasNotClaim = 14,
-        TokenIsNotSafeWithSecurityStamp = 15,
-        BadRequest = 16,
-        DbError = 17,
-        RequestHasNotToken = 18,
-        TokenIsNotValid = 19,
-        SecurityStampTokenIsNotValid = 20,
-        ProviderNotAvailable = 21,
-        UnhandledExceptionHappened = 22,
-        ProcessingIsInProgress = 23,
-        IdentityServerIsNotAvailable=24
+        public static ApiResultErrorCode NotFound => new(1, nameof(NotFound));
+        public static ApiResultErrorCode LogicError => new(2, nameof(LogicError));
+        public static ApiResultErrorCode AlreadyExists => new(3, nameof(AlreadyExists));
+        public static ApiResultErrorCode ParametersAreNotValid => new(4, nameof(ParametersAreNotValid));
+        public static ApiResultErrorCode BadRequest => new(5, nameof(BadRequest));
+        public static ApiResultErrorCode DbError => new(6, nameof(DbError));
+        public static ApiResultErrorCode TokenIsExpired => new(7, nameof(TokenIsExpired));
+        public static ApiResultErrorCode TokenIsNotValid => new(8, nameof(TokenIsNotValid));
+        public static ApiResultErrorCode TokenHasNotClaim => new(9, nameof(TokenHasNotClaim));
+        public static ApiResultErrorCode TokenIsNotSafeWithSecurityStamp => new(10, nameof(TokenIsNotSafeWithSecurityStamp));
+
+        public static ApiResultErrorCode AnUnexpectedErrorHasOccurred => new(11, nameof(AnUnexpectedErrorHasOccurred));
+
+        public ApiResultErrorCode(int id, string name) : base(id, name)
+        {
+        }
     }
 }

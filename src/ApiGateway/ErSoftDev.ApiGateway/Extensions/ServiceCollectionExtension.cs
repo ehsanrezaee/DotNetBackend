@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ErSoftDev.ApiGateway.Infrastructure.ServiceProviderConfiguration.Identity;
+using ErSoftDev.ApiGateway.SeedWorks;
 using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
@@ -53,36 +54,36 @@ namespace ErSoftDev.ApiGateway.Extensions
                     {
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.TokenIsExpired);
+                                ApiGatewayResultErrorCode.TokenIsExpired);
 
                         if (context.Exception.GetType() == typeof(RpcException))
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.IdentityServerIsNotAvailable);
+                                ApiGatewayResultErrorCode.IdentityServerIsNotAvailable);
 
                         if (context.Exception.GetType() != typeof(AppException))
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.TokenIsNotValid);
+                                ApiGatewayResultErrorCode.TokenIsNotValid);
                     },
                     OnTokenValidated = async context =>
                     {
                         var claimsIdentity = context.Principal?.Identity as ClaimsIdentity;
                         if (claimsIdentity?.Claims.Any() != true)
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.TokenHasNotClaim);
+                                ApiGatewayResultErrorCode.TokenHasNotClaim);
 
                         var securityStamp =
                             claimsIdentity.FindFirstValue(new ClaimsIdentityOptions().SecurityStampClaimType);
                         if (securityStamp == null)
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.TokenIsNotSafeWithSecurityStamp);
+                                ApiGatewayResultErrorCode.TokenIsNotSafeWithSecurityStamp);
 
                         var accountService = context.HttpContext.RequestServices
                             .GetRequiredService<IAccountService>();
                         var isSecurityStampTokenValid =
                             await accountService.IsSecurityStampTokenValid(securityStamp);
-                        if (isSecurityStampTokenValid.Status != (int)ApiResultStatusCode.Success)
+                        if (isSecurityStampTokenValid.Status != ApiResultStatusCode.Success.Id)
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.SecurityStampTokenIsNotValid);
+                                ApiGatewayResultErrorCode.SecurityStampTokenIsNotValid);
                     }
                 };
 

@@ -1,5 +1,6 @@
 ﻿using ErSoftDev.DomainSeedWork;
 using System.Text;
+using ErSoftDev.Identity.Domain.SeedWorks;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 {
@@ -30,7 +31,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 
             if (string.IsNullOrWhiteSpace(deviceName) && string.IsNullOrWhiteSpace(browser))
                 throw new AppException(ApiResultStatusCode.Failed,
-                    ApiResultErrorCode.OneOfTheBrowserOrDeviceNameMustBeFill);
+                    IdentityResultErrorCode.OneOfTheBrowserOrDeviceNameMustBeFill);
 
             Id = id;
             UserId = userId;

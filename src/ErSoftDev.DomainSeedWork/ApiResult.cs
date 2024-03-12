@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using SharedTranslate = ErSoftDev.DomainSeedWork.SharedTranslate;
 
 namespace ErSoftDev.DomainSeedWork
 {
@@ -8,12 +7,12 @@ namespace ErSoftDev.DomainSeedWork
     {
         private readonly IStringLocalizer<SharedTranslate> _stringLocalizer;
         [JsonProperty]
-        private ApiResultStatusCode Status { get; set; }
+        private int Status { get; set; }
         [JsonProperty]
         private string? Description { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        private ApiResultErrorCode? ErrorCode { get; set; }
+        private int? ErrorCode { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         private string? ErrorDescription { get; set; }
@@ -23,10 +22,10 @@ namespace ErSoftDev.DomainSeedWork
             string? errorDescription = null)
         {
             _stringLocalizer = stringLocalizer;
-            Status = status;
+            Status = status.Id;
             Description = _stringLocalizer[status.ToString()];
-            ErrorCode = errorCode;
-            ErrorDescription = string.IsNullOrWhiteSpace(errorDescription) && errorCode.HasValue
+            ErrorCode = errorCode?.Id;
+            ErrorDescription = string.IsNullOrWhiteSpace(errorDescription) && errorCode.Id != null
                 ? _stringLocalizer[errorCode.ToString() ?? string.Empty]
                 : _stringLocalizer[errorCode.ToString() ?? string.Empty] == ""
                     ? null
