@@ -68,6 +68,10 @@ services :
         ports:
         - 1433:1433
         restart: always
+        
+    mongo:
+        image: mongo
+        restart: always
             
 networks : 
     elastic :

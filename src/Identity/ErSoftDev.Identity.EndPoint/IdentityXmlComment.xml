@@ -25,6 +25,42 @@
         <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.IsSecurityStampTokenResponseGrpc.ErrorDescriptionFieldNumber">
             <summary>Field number for the "ErrorDescription" field.</summary>
         </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthorizeRequestGrpc.SecurityStampTokenFieldNumber">
+            <summary>Field number for the "SecurityStampToken" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthorizeRequestGrpc.OperateFieldNumber">
+            <summary>Field number for the "Operate" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthorizeResponseGrpc.StatusFieldNumber">
+            <summary>Field number for the "Status" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthorizeResponseGrpc.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthorizeResponseGrpc.ErrorCodeFieldNumber">
+            <summary>Field number for the "ErrorCode" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthorizeResponseGrpc.ErrorDescriptionFieldNumber">
+            <summary>Field number for the "ErrorDescription" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthenticationAndAuthorizationGrpcRequest.SecurityStampTokenFieldNumber">
+            <summary>Field number for the "SecurityStampToken" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthenticationAndAuthorizationGrpcRequest.OperateFieldNumber">
+            <summary>Field number for the "Operate" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthenticationAndAuthorizationGrpcResponse.StatusFieldNumber">
+            <summary>Field number for the "Status" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthenticationAndAuthorizationGrpcResponse.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthenticationAndAuthorizationGrpcResponse.ErrorCodeFieldNumber">
+            <summary>Field number for the "ErrorCode" field.</summary>
+        </member>
+        <member name="F:ErSoftDev.Identity.EndPoint.Grpc.Protos.CheckAuthenticationAndAuthorizationGrpcResponse.ErrorDescriptionFieldNumber">
+            <summary>Field number for the "ErrorDescription" field.</summary>
+        </member>
         <member name="P:ErSoftDev.Identity.EndPoint.Grpc.Protos.AccountGrpcService.Descriptor">
             <summary>Service descriptor</summary>
         </member>

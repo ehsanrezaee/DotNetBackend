@@ -8,9 +8,8 @@ namespace ErSoftDev.DomainSeedWork
 
         Task Add(T tObject, CancellationToken cancellationToken);
 
-        Task<T?> Get(long id, CancellationToken cancellationToken);
+        Task<T?> Get(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
 
-        Task<List<T>> GetList(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
-
+        Task<List<T>?> GetList(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
     }
 }

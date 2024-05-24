@@ -11,11 +11,24 @@ namespace ErSoftDev.ApiGateway.Infrastructure.ServiceProviderConfiguration.Ident
         {
             _accountGrpcServiceClient = accountGrpcServiceClient;
         }
-
         public async Task<IsSecurityStampTokenResponseGrpc> IsSecurityStampTokenValid(string securityStampToken)
         {
             return await _accountGrpcServiceClient.IsSecurityStampTokenValidAsync(
-                new IsSecurityStampTokenRequestGrpc() { SecurityStampToken = securityStampToken });
+                new IsSecurityStampTokenRequestGrpc()
+                { SecurityStampToken = securityStampToken });
+        }
+
+        public async Task<CheckAuthorizeResponseGrpc> IsAuthorize(string securityStampToken, string operate)
+        {
+            return await _accountGrpcServiceClient.CheckAuthorizeAsync(new CheckAuthorizeRequestGrpc()
+            { SecurityStampToken = securityStampToken, Operate = operate });
+        }
+
+        public async Task<CheckAuthenticationAndAuthorizationGrpcResponse> CheckAuthenticateAndAuthorization(string securityStampToken, string operate)
+        {
+            return await _accountGrpcServiceClient.CheckAuthenticationAndAuthorizationAsync(
+                new CheckAuthenticationAndAuthorizationGrpcRequest()
+                { SecurityStampToken = securityStampToken, Operate = operate });
         }
     }
 }

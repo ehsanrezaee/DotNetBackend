@@ -1,23 +1,26 @@
-﻿using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
+﻿using ErSoftDev.Identity.Application.Queries;
+using ErSoftDev.Identity.Infrastructure;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ErSoftDev.Identity.Application.Queries
 {
     public class IsSecurityStampTokenQueryHandler : IRequestHandler<IsSecurityStampTokenValidQuery, bool>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IdentityQueryDbContext _identityQueryDbContext;
 
-        public IsSecurityStampTokenQueryHandler(IUserRepository userRepository)
+        public IsSecurityStampTokenQueryHandler(IdentityQueryDbContext identityQueryDbContext)
         {
-            _userRepository = userRepository;
+            _identityQueryDbContext = identityQueryDbContext;
         }
         public async Task<bool> Handle(IsSecurityStampTokenValidQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserBySecurityStampToken(request.SecurityStampToken, cancellationToken);
-            if (user is not null)
-                return true;
-
-            return false;
+            var userInfo =
+                await _identityQueryDbContext.Users.FirstOrDefaultAsync(user =>
+                    user.SecurityStampToken == request.SecurityStampToken, cancellationToken);
+            if (userInfo is null)
+                return false;
+            return true;
         }
     }
 }

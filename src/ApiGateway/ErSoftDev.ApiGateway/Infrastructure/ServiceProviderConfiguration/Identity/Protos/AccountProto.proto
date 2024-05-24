@@ -5,12 +5,36 @@ import "google/protobuf/wrappers.proto";
 
 service AccountGrpcService{
 	rpc IsSecurityStampTokenValid(IsSecurityStampTokenRequestGrpc) returns (IsSecurityStampTokenResponseGrpc);
+	rpc CheckAuthorize(CheckAuthorizeRequestGrpc) returns (CheckAuthorizeResponseGrpc);
+	rpc CheckAuthenticationAndAuthorization(CheckAuthenticationAndAuthorizationGrpcRequest) returns (CheckAuthenticationAndAuthorizationGrpcResponse);
 }
 
 message IsSecurityStampTokenRequestGrpc{
 	string SecurityStampToken=1;
 }
 message IsSecurityStampTokenResponseGrpc{
+	int32 Status=1;
+	string Description=2;
+	.google.protobuf.Int32Value ErrorCode=3;
+	.google.protobuf.StringValue ErrorDescription=4;
+}
+
+message CheckAuthorizeRequestGrpc{
+	string SecurityStampToken=1;
+	string Operate=2;
+}
+message CheckAuthorizeResponseGrpc{
+	int32 Status=1;
+	string Description=2;
+	.google.protobuf.Int32Value ErrorCode=3;
+	.google.protobuf.StringValue ErrorDescription=4;
+}
+
+message CheckAuthenticationAndAuthorizationGrpcRequest{
+	string SecurityStampToken=1;
+	string Operate=2;
+}
+message CheckAuthenticationAndAuthorizationGrpcResponse{
 	int32 Status=1;
 	string Description=2;
 	.google.protobuf.Int32Value ErrorCode=3;

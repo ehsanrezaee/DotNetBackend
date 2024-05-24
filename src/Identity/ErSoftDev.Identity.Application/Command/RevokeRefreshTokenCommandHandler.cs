@@ -17,7 +17,7 @@ namespace ErSoftDev.Identity.Application.Command
         }
         public async Task<ApiResult> Handle(RevokeRefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByRefreshToken(request.RefreshToken);
+            var user = await _userRepository.GetByRefreshToken(request.RefreshToken, cancellationToken);
             if (user == null)
                 throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
 

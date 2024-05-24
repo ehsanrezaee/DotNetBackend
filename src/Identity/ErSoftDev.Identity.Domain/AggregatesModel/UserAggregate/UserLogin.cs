@@ -1,12 +1,13 @@
-﻿using ErSoftDev.DomainSeedWork;
-using System.Text;
+﻿using System.Text;
+using ErSoftDev.DomainSeedWork;
+using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 using ErSoftDev.Identity.Domain.SeedWorks;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 {
-    public class UserLogin : BaseEntity<long>, IAggregateRoot
+    public class UserLogin : BaseEntity<long>
     {
-        public long UserId { get; set; }
+        public long UserId { get; private set; }
         public string? DeviceName { get; private set; }
         public string? DeviceUniqueId { get; private set; }
         public string? FcmToken { get; private set; }

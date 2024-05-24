@@ -14,7 +14,7 @@ namespace ErSoftDev.Identity.Infrastructure.EntityConfigurations
             builder.Property(role => role.Title).HasMaxLength(100).IsRequired();
             builder.Property(role => role.Description).HasMaxLength(500).IsRequired(false);
 
-            builder.HasMany(role => role.UserRoles).WithOne(userRole => userRole.Role)
+            builder.HasMany(role => role.RoleOperates).WithOne(userRole => userRole.Role)
                 .HasForeignKey(userRole => userRole.RoleId).OnDelete(DeleteBehavior.Cascade);
         }
     }

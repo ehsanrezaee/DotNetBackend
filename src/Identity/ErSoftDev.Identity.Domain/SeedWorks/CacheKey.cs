@@ -2,6 +2,7 @@
 {
     public enum CacheKey
     {
-        Login = 0
+        Login = 0,
+        UserOperates = 1
     }
 }

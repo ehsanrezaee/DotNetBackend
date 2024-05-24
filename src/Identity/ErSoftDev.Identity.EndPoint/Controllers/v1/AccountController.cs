@@ -1,5 +1,4 @@
 ﻿using ErSoftDev.DomainSeedWork;
-using ErSoftDev.Framework.Api;
 using ErSoftDev.Identity.Application.Command;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ErSoftDev.Identity.EndPoint.Controllers.v1
 {
     [ApiVersion("1.0")]
-    public class AccountController : BaseController
+    public class AccountController : IdentityBaseController
     {
         private readonly IMediator _mediator;
 

@@ -17,11 +17,12 @@ namespace ErSoftDev.Identity.Application.Command
         }
         public async Task<ApiResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.Get(request.Id, cancellationToken);
-            if (user == null)
+            var user = await _userRepository.Get(user => user.Id == request.Id, cancellationToken);
+            if (user is null)
                 throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
 
-            user.Update(request.Firstname, request.Lastname, request.CellPhone, request.Email, request.Address);
+            user.Update(request.Firstname, request.Lastname, request.CellPhone, request.Email, request.Address,
+                request.IsActive);
 
             await _userRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using ErSoftDev.DomainSeedWork;
+using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 using ErSoftDev.Identity.Domain.SeedWorks;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
@@ -9,13 +10,14 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
         public string Firstname { get; private set; }
         public string Lastname { get; private set; }
         public string Username { get; private set; }
+        public string SaltPassword { get; set; }
         public string Password { get; private set; }
         public string? CellPhone { get; private set; }
         public string? Email { get; private set; }
         public string? Image { get; private set; }
         public string SecurityStampToken { get; private set; }
+        public bool IsActive { get; set; }
         public Address? Address { get; private set; }
-
 
         private readonly List<UserRole> _userRoles = new();
         public IReadOnlyCollection<UserRole> UserRoles => _userRoles;
@@ -26,12 +28,9 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
         private readonly List<UserRefreshToken> _userRefreshTokens = new();
         public IReadOnlyCollection<UserRefreshToken> UserRefreshTokens => _userRefreshTokens;
 
-        private User()
-        {
+        private User() { }
 
-        }
-
-        public User(long id, string firstname, string lastname, string username, string password, string checkPassword)
+        public User(long id, string firstname, string lastname, string username, string password, string checkPassword, string saltPassword, bool isActive)
         {
             var parameterValidation = new StringBuilder();
             if (id == 0)
@@ -46,6 +45,8 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
                 parameterValidation.Append(nameof(password) + " ");
             if (string.IsNullOrWhiteSpace(checkPassword))
                 parameterValidation.Append(nameof(checkPassword) + " ");
+            if (string.IsNullOrWhiteSpace(saltPassword))
+                parameterValidation.Append(nameof(SaltPassword) + " ");
             if (parameterValidation.Length > 0)
                 throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.ParametersAreNotValid,
                     parameterValidation.ToString());
@@ -59,9 +60,11 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
             Username = username;
             Password = password;
             CreatorUserId = id;
+            SaltPassword = saltPassword;
+            IsActive = IsActive;
         }
 
-        public void Update(string? firstname, string? lastname, string? cellPhone, string? email, Address? address)
+        public void Update(string? firstname, string? lastname, string? cellPhone, string? email, Address? address, bool? isActive)
         {
             if (address is not null)
             {
@@ -87,20 +90,21 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
             CellPhone = cellPhone ?? CellPhone;
             Email = email ?? Email;
             Address = address ?? Address;
+            IsActive = isActive ?? IsActive;
         }
 
-        public string UpdateSecurityStampTokenAndGetRefreshToken(string securityStampToken,
+        public string LoginOperation(string securityStampToken,
             DateTime refreshTokenExpiry, string? deviceName, string? deviceUniqueId, string? fcmToken, string? browser,
             long refreshTokenId, long loginId)
         {
             SecurityStampToken = securityStampToken;
-            UpdaterUserId = Id;
 
             var refreshToken = NewRefreshToken();
 
-            var previousRefreshToken = _userRefreshTokens.FirstOrDefault(token =>
-                token.IsActive && token.IsRevoke == false && token.IsUse == false);
-            previousRefreshToken?.DeletePreviousRefreshToken();
+            var previousRefreshTokens = _userRefreshTokens.Where(token =>
+                token is { IsActive: true, IsRevoke: false, IsUse: false });
+            foreach (var previousRefreshToken in previousRefreshTokens)
+                previousRefreshToken?.DeletePreviousRefreshToken();
 
             _userRefreshTokens.Add(new UserRefreshToken(refreshTokenId, Id, refreshToken, true, false, false,
                 refreshTokenExpiry));
@@ -131,6 +135,11 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
             DateTime refreshTokenExpiry)
         {
             SecurityStampToken = securityStampToken;
+
+            var previousRefreshTokens = _userRefreshTokens.Where(token =>
+                token is { IsActive: true, IsRevoke: false, IsUse: false });
+            foreach (var previousRefreshToken in previousRefreshTokens)
+                previousRefreshToken?.DeletePreviousRefreshToken();
 
             var refreshToken = NewRefreshToken();
             _userRefreshTokens.Add(new UserRefreshToken(id, Id, refreshToken, true, false, false,

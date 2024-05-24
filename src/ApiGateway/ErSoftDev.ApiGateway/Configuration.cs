@@ -5,9 +5,7 @@ using ErSoftDev.Framework.Configuration;
 using ErSoftDev.Identity.EndPoint.Grpc.Protos;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Provider.Polly;
 
 namespace ErSoftDev.ApiGateway
 {

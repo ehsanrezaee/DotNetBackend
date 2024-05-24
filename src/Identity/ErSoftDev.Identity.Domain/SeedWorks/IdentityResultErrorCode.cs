@@ -13,6 +13,7 @@ namespace ErSoftDev.Identity.Domain.SeedWorks
         public static IdentityResultErrorCode RefreshTokenIsExpire => new(105, nameof(RefreshTokenIsExpire));
         public static IdentityResultErrorCode AllFieldsOfAddressMustBeFillOrNonOfFields => new(106, nameof(AllFieldsOfAddressMustBeFillOrNonOfFields));
         public static IdentityResultErrorCode OneOfTheBrowserOrDeviceNameMustBeFill => new(107, nameof(OneOfTheBrowserOrDeviceNameMustBeFill));
+        public static IdentityResultErrorCode UserIsNotLogin => new(108, nameof(UserIsNotLogin));
 
         protected IdentityResultErrorCode(int id, string name) : base(id, name)
         {

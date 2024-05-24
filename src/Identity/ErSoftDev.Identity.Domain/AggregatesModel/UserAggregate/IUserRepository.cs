@@ -6,10 +6,12 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
     {
         Task<User?> GetByUsernameAndPassword(string username, string password, CancellationToken cancellationToken);
 
-        Task<User?> GetUser(long id);
+        Task<User?> GetUser(long id, CancellationToken cancellationToken);
 
-        Task<User?> GetByRefreshToken(string refreshToken);
+        Task<User?> GetUserByUsername(string username, CancellationToken cancellationToken);
 
-        Task<User?> GetUserBySecurityStampToken(string securityStampToken, CancellationToken cancellationToken);
+        Task<User?> GetByRefreshToken(string refreshToken, CancellationToken cancellationToken);
+
+        //Task<User?> GetUserBySecurityStampToken(string securityStampToken, CancellationToken cancellationToken);
     }
 }

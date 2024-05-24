@@ -3,7 +3,6 @@ using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Jwt;
-using ErSoftDev.Framework.Log;
 using ErSoftDev.Framework.Redis;
 using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 using ErSoftDev.Identity.Domain.SeedWorks;
@@ -44,14 +43,15 @@ namespace ErSoftDev.Identity.Application.Command
             if (loginFromCache != null)
                 return new ApiResult<LoginResponse>(_stringLocalizer, ApiResultStatusCode.Success, loginFromCache);
 
-            var user = await _userRepository.GetByUsernameAndPassword(request.Username,
-                SecurityHelper.GetMd5(request.Password), cancellationToken);
-            if (user is null)
-                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.UsernameOrPasswordIsNotCorrect);
+            var user = await _userRepository.GetUserByUsername(request.Username, cancellationToken);
+            if (user is null || SecurityHelper.GetMd5(request.Password, user.SaltPassword).EncrypedData !=
+                user.Password)
+                throw new AppException(ApiResultStatusCode.Failed,
+                    IdentityResultErrorCode.UsernameOrPasswordIsNotCorrect);
 
             var securityStampToken = Guid.NewGuid().ToString();
             var refreshTokenExpiry = DateTime.Now.AddSeconds(_appSetting.Value.Jwt.RefreshTokenExpirySecond);
-            var refreshToken = user.UpdateSecurityStampTokenAndGetRefreshToken(securityStampToken,
+            var refreshToken = user.LoginOperation(securityStampToken,
                 refreshTokenExpiry, request.DeviceName, request.DeviceUniqueId,
                 request.FcmToken, request.Browser, _idGenerator.CreateId(), _idGenerator.CreateId());
 

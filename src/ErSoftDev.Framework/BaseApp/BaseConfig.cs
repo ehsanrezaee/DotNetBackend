@@ -46,6 +46,7 @@ namespace ErSoftDev.Framework.BaseApp
             services.AddCustomCap(_appSetting);
             services.AddHealthChecks().AddCustomCheck();
             services.AddCustomLogging(_appSetting, Configuration, environment);
+            services.AddHttpContextAccessor();
         }
 
         public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppSetting appSetting)
