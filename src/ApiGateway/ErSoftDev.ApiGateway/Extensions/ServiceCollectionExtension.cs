@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Grpc.Core;
+using Microsoft.AspNetCore.Identity;
+using System.Net;
 using ErSoftDev.ApiGateway.Infrastructure.ServiceProviderConfiguration.Identity;
 using ErSoftDev.ApiGateway.SeedWorks;
 using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
-using Grpc.Core;
-using Microsoft.AspNetCore.Identity;
 
 namespace ErSoftDev.ApiGateway.Extensions
 {
@@ -50,40 +51,45 @@ namespace ErSoftDev.ApiGateway.Extensions
                 options.TokenValidationParameters = validationParameters;
                 options.Events = new JwtBearerEvents
                 {
-                    OnAuthenticationFailed = async context =>
+                    OnAuthenticationFailed = context =>
                     {
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiGatewayResultErrorCode.TokenIsExpired);
+                                ApiResultErrorCode.TokenIsExpired, null, HttpStatusCode.Unauthorized);
 
                         if (context.Exception.GetType() == typeof(RpcException))
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiGatewayResultErrorCode.IdentityServerIsNotAvailable);
+                                ApiGatewayResultErrorCode.IdentityServerIsNotAvailable, null, HttpStatusCode.Unauthorized);
 
                         if (context.Exception.GetType() != typeof(AppException))
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiGatewayResultErrorCode.TokenIsNotValid);
+                                ApiResultErrorCode.TokenIsNotValid, null, HttpStatusCode.Unauthorized);
+                        return Task.CompletedTask;
                     },
                     OnTokenValidated = async context =>
                     {
                         var claimsIdentity = context.Principal?.Identity as ClaimsIdentity;
                         if (claimsIdentity?.Claims.Any() != true)
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiGatewayResultErrorCode.TokenHasNotClaim);
+                                ApiResultErrorCode.TokenHasNotClaim, null, HttpStatusCode.Unauthorized);
 
                         var securityStamp =
                             claimsIdentity.FindFirstValue(new ClaimsIdentityOptions().SecurityStampClaimType);
                         if (securityStamp == null)
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiGatewayResultErrorCode.TokenIsNotSafeWithSecurityStamp);
+                                ApiResultErrorCode.TokenIsNotSafeWithSecurityStamp, null, HttpStatusCode.Unauthorized);
 
                         var accountService = context.HttpContext.RequestServices
                             .GetRequiredService<IAccountService>();
-                        var isSecurityStampTokenValid =
-                            await accountService.IsSecurityStampTokenValid(securityStamp);
-                        if (isSecurityStampTokenValid.Status != ApiResultStatusCode.Success.Id)
+                        var actionPrefix = context.HttpContext.Request.Path.ToString().Split('/');
+                        var actionName = actionPrefix[1] + "/" + actionPrefix[3] + "/" + actionPrefix[4] + "/" +
+                                         actionPrefix[5] + "/";
+
+                        var isAuthenticateAndAuthorize =
+                            await accountService.CheckAuthenticateAndAuthorization(securityStamp, actionName);
+                        if (isAuthenticateAndAuthorize.Status != ApiResultStatusCode.Success.Id)
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiGatewayResultErrorCode.SecurityStampTokenIsNotValid);
+                                ApiGatewayResultErrorCode.SecurityStampTokenIsNotValid, null, HttpStatusCode.Unauthorized);
                     }
                 };
 

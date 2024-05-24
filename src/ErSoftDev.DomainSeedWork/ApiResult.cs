@@ -25,11 +25,11 @@ namespace ErSoftDev.DomainSeedWork
             Status = status.Id;
             Description = _stringLocalizer[status.ToString()];
             ErrorCode = errorCode?.Id;
-            ErrorDescription = string.IsNullOrWhiteSpace(errorDescription) && errorCode.Id != null
-                ? _stringLocalizer[errorCode.ToString() ?? string.Empty]
-                : _stringLocalizer[errorCode.ToString() ?? string.Empty] == ""
+            ErrorDescription = string.IsNullOrWhiteSpace(errorDescription) && errorCode?.Id != null
+                ? _stringLocalizer[errorCode.ToString()]
+                : _stringLocalizer[errorCode?.ToString() ?? string.Empty] == ""
                     ? null
-                    : _stringLocalizer[errorCode.ToString() ?? string.Empty] + " " + errorDescription;
+                    : _stringLocalizer[errorCode?.ToString() ?? string.Empty] + " " + errorDescription;
         }
     }
 

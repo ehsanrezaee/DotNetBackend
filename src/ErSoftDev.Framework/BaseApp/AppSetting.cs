@@ -2,8 +2,9 @@
 {
     public class AppSetting
     {
-        public string ConnectionString { get; set; }
+        public ConnectionString ConnectionString { get; set; }
         public string WelcomeNote { get; set; }
+        public bool ShowExceptionMessage { get; set; }
         public Logging Logging { get; set; }
         public Jwt Jwt { get; set; }
         public Swagger? Swagger { get; set; }
@@ -18,6 +19,11 @@
         public ElasticSearch ElasticSearch { get; set; }
     }
 
+    public class ConnectionString
+    {
+        public string AppConnectionString { get; set; }
+        public string AppConnectionStringReadOnly { get; set; }
+    }
     public class Jaeger
     {
         public string Host { get; set; }

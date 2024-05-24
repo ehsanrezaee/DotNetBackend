@@ -1,8 +1,10 @@
 ﻿using System.Data;
+using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Configuration;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
@@ -13,14 +15,16 @@ namespace ErSoftDev.Framework.BaseModel
     {
         private readonly IOptions<AppSetting> _appSetting;
         private readonly IMediator _mediator;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         private IDbContextTransaction _currentTransaction;
 
         public BaseDbContext(DbContextOptions options, IOptions<AppSetting> appSetting,
-             IMediator mediator) : base(options)
+             IMediator mediator, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _appSetting = appSetting;
             _mediator = mediator;
+            _httpContextAccessor = httpContextAccessor;
         }
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 
@@ -28,8 +32,8 @@ namespace ErSoftDev.Framework.BaseModel
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (_appSetting?.Value.ConnectionString != null)
-                optionsBuilder.UseSqlServer(_appSetting.Value.ConnectionString);
+            //if (_appSetting?.Value.ConnectionString != null)
+            //    optionsBuilder.UseSqlServer(_appSetting.Value.ConnectionString);
 #if DEBUG
             optionsBuilder.EnableSensitiveDataLogging();
 #endif
@@ -45,15 +49,31 @@ namespace ErSoftDev.Framework.BaseModel
 
             modelBuilder.AddPluralizingTableNameConvention<IHaveNotPluralized>();
         }
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries())
                 switch (entry.State)
                 {
                     case EntityState.Modified:
                         {
-                            if (entry.Properties.Any(e => e.Metadata.Name == "UpdatedAt"))
-                                entry.Property("UpdatedAt").CurrentValue = DateTime.Now;
+                            if (entry.Property("IsDeleted").CurrentValue?.ToString() == "True")
+                            {
+                                if (_httpContextAccessor.UserIdClaimIdentity() is not null)
+                                    entry.Property("DeleterUserId").CurrentValue =
+                                        long.Parse(_httpContextAccessor.UserIdClaimIdentity()!);
+                                entry.Property("DeletedAt").CurrentValue = DateTime.Now;
+                            }
+                            else
+                            {
+                                if (entry.Properties.Any(e => e.Metadata.Name == "UpdatedAt"))
+                                    entry.Property("UpdatedAt").CurrentValue = DateTime.Now;
+                                if (entry.Properties.Any(e => e.Metadata.Name == "UpdaterUserId") &&
+                                    _httpContextAccessor.UserIdClaimIdentity() is not null)
+                                    entry.Property("UpdaterUserId").CurrentValue =
+                                        long.Parse(_httpContextAccessor.UserIdClaimIdentity()!);
+                            }
+
                             break;
                         }
                     case EntityState.Added:
@@ -61,8 +81,12 @@ namespace ErSoftDev.Framework.BaseModel
                             if (entry.Properties.Any(e => e.Metadata.Name == "CreatedAt"))
                             {
                                 entry.Property("CreatedAt").CurrentValue = DateTime.Now;
+                                if (_httpContextAccessor.UserIdClaimIdentity() is not null)
+                                    entry.Property("CreatorUserId").CurrentValue =
+                                        long.Parse(_httpContextAccessor.UserIdClaimIdentity()!);
                                 entry.Property("IsDeleted").CurrentValue = false;
                             }
+
                             break;
                         }
                 }

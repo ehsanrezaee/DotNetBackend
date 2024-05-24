@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MediatR;
+﻿using MediatR;
 
 namespace ErSoftDev.Identity.Application.Queries
 {
@@ -10,5 +9,6 @@ namespace ErSoftDev.Identity.Application.Queries
             SecurityStampToken = securityStampToken;
         }
         public string SecurityStampToken { get; set; }
+        public string ActionName { get; set; }
     }
 }

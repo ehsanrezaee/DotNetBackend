@@ -19,16 +19,24 @@ namespace ErSoftDev.Identity.Application.Command
             _userRepository = userRepository;
             _stringLocalizer = stringLocalizer;
         }
+
         public async Task<ApiResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var userIsExist = await _userRepository.GetList(user =>
-                user.Username.ToLower() == request.Username.ToLower(), cancellationToken);
-            if (userIsExist.Count > 0)
+            var user = await _userRepository.Get(
+                user => string.Equals(user.Username, request.Username,
+                    StringComparison.CurrentCultureIgnoreCase) && user.IsDeleted == false,
+                cancellationToken);
+            if (user != null)
                 throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.AlreadyExists);
 
-            var user = new User(_idGenerator.CreateId(), request.Firstname, request.Lastname, request.Username,
-                SecurityHelper.GetMd5(request.Password), SecurityHelper.GetMd5(request.CheckPassword));
-            await _userRepository.Add(user, cancellationToken);
+
+            var md5Password = SecurityHelper.GetMd5(request.Password);
+
+            var newUser = new User(_idGenerator.CreateId(), request.Firstname,
+                request.Lastname, request.Username,
+                md5Password.EncrypedData, SecurityHelper.GetMd5(request.CheckPassword, md5Password.Salt).EncrypedData,
+                md5Password.Salt, true);
+            await _userRepository.Add(newUser, cancellationToken);
             await _userRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
             return new ApiResult(_stringLocalizer, ApiResultStatusCode.Success);

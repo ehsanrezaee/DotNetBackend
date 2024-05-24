@@ -1,6 +1,6 @@
-﻿
+﻿using System.Text;
 using ErSoftDev.DomainSeedWork;
-using System.Text;
+using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 {

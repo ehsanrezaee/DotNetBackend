@@ -65,7 +65,7 @@ namespace ErSoftDev.Framework.Configuration
         {
             serviceCollection.AddDbContext<BaseDbContext>(options =>
                     {
-                        options.UseSqlServer(appSetting.ConnectionString);
+                        options.UseSqlServer(appSetting.ConnectionString.AppConnectionString);
                     });
         }
 
@@ -312,7 +312,7 @@ namespace ErSoftDev.Framework.Configuration
                 config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseDefaultTypeSerializer()
-                    .UseSqlServerStorage(appSetting.ConnectionString, new SqlServerStorageOptions
+                    .UseSqlServerStorage(appSetting.ConnectionString.AppConnectionString, new SqlServerStorageOptions
                     {
                         CommandBatchMaxTimeout = TimeSpan.FromMinutes(appSetting.Hangfire.CommandBatchMaxTimeout),
                         SlidingInvisibilityTimeout = TimeSpan.FromMinutes(appSetting.Hangfire.SlidingInvisibilityTimeout),
@@ -351,7 +351,7 @@ namespace ErSoftDev.Framework.Configuration
 
             serviceCollection.AddCap(options =>
             {
-                options.UseSqlServer(appSetting.ConnectionString);
+                options.UseSqlServer(appSetting.ConnectionString.AppConnectionString);
                 options.UseDashboard(path => path.PathMatch = "/cap-dashboard");
                 options.UseRabbitMQ(options =>
                 {

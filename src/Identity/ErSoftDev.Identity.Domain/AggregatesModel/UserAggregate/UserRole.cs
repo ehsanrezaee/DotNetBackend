@@ -1,5 +1,5 @@
 ﻿using ErSoftDev.DomainSeedWork;
-using ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate;
+using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 {
@@ -9,7 +9,6 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
         public long RoleId { get; private set; }
 
         public User User { get; private set; }
-        public Role Role { get; private set; }
 
         private UserRole()
         {
