@@ -7,7 +7,6 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.OperateAggregate
     {
         public string Title { get; private set; }
         public string Description { get; private set; }
-
         private Operate() { }
 
         public Operate(string title, string description)

@@ -29,12 +29,20 @@ namespace ErSoftDev.Identity.Infrastructure.Repositories
 
         public async Task<User?> Get(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken)
         {
-            return await _identityDbContext.Users.FirstOrDefaultAsync(predicate, cancellationToken);
+            return await _identityDbContext.Users
+                .Include(user => user.UserLogins)
+                .Include(user => user.UserRefreshTokens)
+                .FirstOrDefaultAsync(predicate, cancellationToken);
         }
 
         public async Task<List<User>?> GetList(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken)
         {
             return await _identityDbContext.Users.Where(predicate).ToListAsync(cancellationToken);
+        }
+
+        public void Delete(User tObject)
+        {
+            _identityDbContext.Remove(tObject);
         }
 
         public async Task<User?> GetByUsernameAndPassword(string username, string password, CancellationToken cancellationToken)

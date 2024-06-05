@@ -5,9 +5,9 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
     public class Address : ValueObject
 
     {
-        public int StateId { get; private set; }
+        public long StateId { get; private set; }
         public string StateName { get; private set; }
-        public int CityId { get; private set; }
+        public long CityId { get; private set; }
         public string CityName { get; private set; }
         public string AddressLine { get; private set; }
         public string Plaque { get; private set; }
@@ -19,12 +19,17 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 
         }
 
-        public Address(string addressLine, string plaque, string unit, string postalCode)
+        public Address(string addressLine, string plaque, string unit, string postalCode, long stateId,
+            string stateName, long cityId, string cityName)
         {
             AddressLine = addressLine;
             Plaque = plaque;
             Unit = unit;
             PostalCode = postalCode;
+            StateId = stateId;
+            CityId = cityId;
+            CityName = cityName;
+            AddressLine = addressLine;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

@@ -11,6 +11,7 @@ namespace ErSoftDev.Identity.Infrastructure.EntityConfigurations
             builder.ToTable("Roles", IdentityDbContext.DefaultSchema);
 
             builder.HasKey(role => role.Id);
+            builder.Property(role => role.Id).ValueGeneratedNever();
             builder.Property(role => role.Title).HasMaxLength(100).IsRequired();
             builder.Property(role => role.Description).HasMaxLength(500).IsRequired(false);
 

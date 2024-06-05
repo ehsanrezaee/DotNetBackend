@@ -24,7 +24,6 @@ namespace ErSoftDev.Identity.Application.Queries
             CancellationToken cancellationToken)
         {
             var roles = await _identityQueryDbContext.Roles.Where(role =>
-                    role.IsDeleted == false &&
                     (request.Id == null || role.Id == request.Id) &&
                     (request.Title == null || EF.Functions.Like(role.Title, "%" + request.Title + "%")))
                 .Select(role => new { role.Id, role.Title, role.Description })

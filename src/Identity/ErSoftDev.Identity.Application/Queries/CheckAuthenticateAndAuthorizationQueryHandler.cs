@@ -46,17 +46,15 @@ namespace ErSoftDev.Identity.Application.Queries
                 join userRole in _identityQueryDbContext.UserRoles
                     on user.Id equals userRole.UserId into userGrouping
                 from userRole in userGrouping
-                where user.SecurityStampToken == request.SecurityStampToken && user.IsDeleted == false && user.IsActive
+                where user.SecurityStampToken == request.SecurityStampToken && user.IsActive
 
                 join roleOperate in _identityQueryDbContext.RoleOperates
                     on userRole.RoleId equals roleOperate.RoleId into roleOperateGrouping
                 from roleOperate in roleOperateGrouping
-                where roleOperate.IsDeleted == false
 
                 join operate in _identityQueryDbContext.Operates
                     on roleOperate.OperateId equals operate.Id into operateGrouping
                 from operate in operateGrouping
-                where operate.IsDeleted == false
                 select operate;
             var authorize = await authorizeQuery.ToListAsync(cancellationToken);
 

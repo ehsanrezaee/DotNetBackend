@@ -1,17 +1,19 @@
 ﻿using System.Text;
 using ErSoftDev.DomainSeedWork;
-using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 using ErSoftDev.Identity.Domain.SeedWorks;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 {
-    public class UserLogin : BaseEntity<long>
+    public class UserLogin : BaseEntity<long>, ISoftDelete
     {
         public long UserId { get; private set; }
         public string? DeviceName { get; private set; }
         public string? DeviceUniqueId { get; private set; }
         public string? FcmToken { get; private set; }
         public string? Browser { get; private set; }
+        public bool IsDeleted { get; set; }
+        public long? DeleterUserId { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
         public User User { get; private set; }
 

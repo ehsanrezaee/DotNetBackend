@@ -201,4 +201,10 @@
   <data name="UsernameOrPasswordIsNotCorrect" xml:space="preserve">
     <value>نام کاربری یا کلمه ی عبور صحیح نمی باشد</value>
   </data>
+  <data name="UserNoFound" xml:space="preserve">
+    <value>کاربر یافت نشد</value>
+  </data>
+  <data name="UserIsNotActive" xml:space="preserve">
+    <value>کاربر غیر فعال می باشد</value>
+  </data>
 </root>

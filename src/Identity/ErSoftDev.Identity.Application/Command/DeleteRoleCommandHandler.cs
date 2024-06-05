@@ -23,7 +23,7 @@ namespace ErSoftDev.Identity.Application.Command
             if (role == null)
                 throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
 
-            role.Delete();
+            _roleRepository.Delete(role);
 
             await _roleRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -14,6 +14,8 @@ namespace ErSoftDev.Identity.Domain.SeedWorks
         public static IdentityResultErrorCode AllFieldsOfAddressMustBeFillOrNonOfFields => new(106, nameof(AllFieldsOfAddressMustBeFillOrNonOfFields));
         public static IdentityResultErrorCode OneOfTheBrowserOrDeviceNameMustBeFill => new(107, nameof(OneOfTheBrowserOrDeviceNameMustBeFill));
         public static IdentityResultErrorCode UserIsNotLogin => new(108, nameof(UserIsNotLogin));
+        public static IdentityResultErrorCode UserNotFound => new(109, nameof(UserNotFound));
+        public static IdentityResultErrorCode UserIsNotActive => new(109, nameof(UserIsNotActive));
 
         protected IdentityResultErrorCode(int id, string name) : base(id, name)
         {

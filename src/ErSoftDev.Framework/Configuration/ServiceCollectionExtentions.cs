@@ -36,6 +36,7 @@ using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Serialization;
 
 namespace ErSoftDev.Framework.Configuration
 {
@@ -57,6 +58,7 @@ namespace ErSoftDev.Framework.Configuration
                 {
                     options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 })
                 .AddCors();
         }

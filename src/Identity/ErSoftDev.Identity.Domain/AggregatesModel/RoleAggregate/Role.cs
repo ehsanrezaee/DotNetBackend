@@ -14,7 +14,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate
 
         private Role() { }
 
-        public Role(string title, string description, bool isActive)
+        public Role(long id, string title, string description, bool isActive)
         {
             var parameterValidation = new StringBuilder();
             if (string.IsNullOrWhiteSpace(title))
@@ -25,6 +25,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate
                 throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.ParametersAreNotValid,
                     parameterValidation.ToString());
 
+            Id = id;
             Title = title;
             Description = description;
             IsActive = isActive;
@@ -35,11 +36,6 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate
             Title = title ?? Title;
             Description = description ?? Description;
             IsActive = isActive ?? IsActive;
-        }
-
-        public void Delete()
-        {
-            IsDeleted = true;
         }
     }
 }

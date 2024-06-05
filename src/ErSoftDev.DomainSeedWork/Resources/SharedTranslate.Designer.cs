@@ -304,11 +304,29 @@ namespace ErSoftDev.DomainSeedWork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to کاربر غیر فعال می باشد.
+        /// </summary>
+        internal static string UserIsNotActive {
+            get {
+                return ResourceManager.GetString("UserIsNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نام کاربری یا کلمه ی عبور صحیح نمی باشد.
         /// </summary>
         internal static string UsernameOrPasswordIsNotCorrect {
             get {
                 return ResourceManager.GetString("UsernameOrPasswordIsNotCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to کاربر یافت نشد.
+        /// </summary>
+        internal static string UserNoFound {
+            get {
+                return ResourceManager.GetString("UserNoFound", resourceCulture);
             }
         }
     }

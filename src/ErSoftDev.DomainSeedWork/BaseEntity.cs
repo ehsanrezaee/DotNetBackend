@@ -12,18 +12,24 @@ namespace ErSoftDev.DomainSeedWork
 
     }
 
-    public abstract class BaseEntity<TKey> : DomainEvent, IEntity
+    public interface ISoftDelete
     {
-        [Key]
-        public TKey? Id { get; set; }
+        public bool IsDeleted { get; set; }
+        public long? DeleterUserId { get; set; }
+        public DateTime? DeletedAt { get; set; }
+    }
+
+    public abstract class BaseEntity : DomainEvent, IEntity
+    {
         public long CreatorUserId { get; set; }
         public DateTime CreatedAt { get; set; }
         public long? UpdaterUserId { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public bool IsDeleted { get; set; }
-        public long? DeleterUserId { get; set; }
-        public DateTime? DeletedAt { get; set; }
-
+    }
+    public abstract class BaseEntity<TKey> : BaseEntity
+    {
+        [Key]
+        public TKey? Id { get; set; }
     }
 
     public abstract class DomainEvent
