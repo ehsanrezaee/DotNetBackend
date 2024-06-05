@@ -30,7 +30,8 @@ Brief descriptions :
 - Versioning management
 - Integrate Swagger and JWT/OAuth Authentication
 - Use dynamic versioning in swagger
-- Exception Handling  byusing Custom Middleware
+- Exception Handling by using Custom Middleware
+- Use soft delete for desired entities
 - Use automapper like mapster
 
 
