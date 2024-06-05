@@ -52,5 +52,12 @@ namespace ErSoftDev.Identity.EndPoint.Controllers.v1
         {
             return await _mediator.Send(request, cancellationToken);
         }
+
+        [HttpDelete("[action]")]
+        public async Task<ApiResult> Delete(DeleteUserCommand request,
+            CancellationToken cancellationToken)
+        {
+            return await _mediator.Send(request, cancellationToken);
+        }
     }
 }

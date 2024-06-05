@@ -6,7 +6,6 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate
     {
         public long RoleId { get; private set; }
         public long OperateId { get; private set; }
-
         public Role Role { get; private set; }
 
         private RoleOperate() { }

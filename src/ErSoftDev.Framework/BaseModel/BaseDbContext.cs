@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Linq;
 using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
@@ -42,12 +43,10 @@ namespace ErSoftDev.Framework.BaseModel
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            var entitiesAssembly = AppDomain.CurrentDomain.GetAssemblies();// typeof(IEntity).Assembly;
-
+            var entitiesAssembly = AppDomain.CurrentDomain.GetAssemblies();
             modelBuilder.RegisterEntityTypeConfiguration(entitiesAssembly);
-
             modelBuilder.AddPluralizingTableNameConvention<IHaveNotPluralized>();
+            modelBuilder.SoftDeleteQueryFilter<ISoftDelete>(entitiesAssembly);
         }
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -55,37 +54,64 @@ namespace ErSoftDev.Framework.BaseModel
             foreach (var entry in ChangeTracker.Entries())
                 switch (entry.State)
                 {
-                    case EntityState.Modified:
+                    case EntityState.Deleted:
                         {
-                            if (entry.Property("IsDeleted").CurrentValue?.ToString() == "True")
+                            if (entry.Properties.Any(e => e.Metadata.Name == "IsDeleted") ||
+                                entry.Properties.Any(e => e.Metadata.Name == "DeletedAt") ||
+                                entry.Properties.Any(e => e.Metadata.Name == "DeleterUserId"))
                             {
-                                if (_httpContextAccessor.UserIdClaimIdentity() is not null)
+
+                                if (entry.Collections.Any() && !entry.Collections.Any(collectionEntry =>
+                                        collectionEntry.EntityEntry.Metadata.GetProperties()
+                                            .Any(x => x.Name == "IsDeleted")))
+                                    throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.DbError);
+
+                                var collectionCount = entry.Metadata.GetReferencingForeignKeys().Count(foreignKey =>
+                                    foreignKey.DeclaringEntityType.ClrType.BaseType?.Name != nameof(ValueObject));
+                                if (collectionCount != entry.Collections.Count())
+                                    throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.DbError);
+
+
+                                //foreach (var collection in entry.Collections)
+                                //{
+                                //    if(collection.)
+                                //}
+
+                                entry.State = EntityState.Modified;
+                                if (entry.Properties.Any(e =>
+                                        e.Metadata.Name == "DeleterUserId" &&
+                                        _httpContextAccessor.UserIdClaimIdentity() is not null))
                                     entry.Property("DeleterUserId").CurrentValue =
                                         long.Parse(_httpContextAccessor.UserIdClaimIdentity()!);
-                                entry.Property("DeletedAt").CurrentValue = DateTime.Now;
+                                if (entry.Properties.Any(e => e.Metadata.Name == "DeletedAt"))
+                                    entry.Property("DeletedAt").CurrentValue = DateTime.Now;
+                                if (entry.Properties.Any(e => e.Metadata.Name == "IsDeleted"))
+                                    entry.Property("IsDeleted").CurrentValue = true;
                             }
-                            else
-                            {
-                                if (entry.Properties.Any(e => e.Metadata.Name == "UpdatedAt"))
-                                    entry.Property("UpdatedAt").CurrentValue = DateTime.Now;
-                                if (entry.Properties.Any(e => e.Metadata.Name == "UpdaterUserId") &&
-                                    _httpContextAccessor.UserIdClaimIdentity() is not null)
-                                    entry.Property("UpdaterUserId").CurrentValue =
-                                        long.Parse(_httpContextAccessor.UserIdClaimIdentity()!);
-                            }
+
+                            break;
+                        }
+                    case EntityState.Modified:
+                        {
+                            if (entry.Properties.Any(e => e.Metadata.Name == "UpdatedAt"))
+                                entry.Property("UpdatedAt").CurrentValue = DateTime.Now;
+                            if (entry.Properties.Any(e => e.Metadata.Name == "UpdaterUserId") &&
+                                _httpContextAccessor.UserIdClaimIdentity() is not null)
+                                entry.Property("UpdaterUserId").CurrentValue =
+                                    long.Parse(_httpContextAccessor.UserIdClaimIdentity()!);
 
                             break;
                         }
                     case EntityState.Added:
                         {
                             if (entry.Properties.Any(e => e.Metadata.Name == "CreatedAt"))
-                            {
                                 entry.Property("CreatedAt").CurrentValue = DateTime.Now;
-                                if (_httpContextAccessor.UserIdClaimIdentity() is not null)
-                                    entry.Property("CreatorUserId").CurrentValue =
-                                        long.Parse(_httpContextAccessor.UserIdClaimIdentity()!);
+                            if (entry.Properties.Any(e => e.Metadata.Name == "CreatedAt") &&
+                                _httpContextAccessor.UserIdClaimIdentity() is not null)
+                                entry.Property("CreatorUserId").CurrentValue =
+                                    long.Parse(_httpContextAccessor.UserIdClaimIdentity()!);
+                            if (entry.Properties.Any(e => e.Metadata.Name == "IsDeleted"))
                                 entry.Property("IsDeleted").CurrentValue = false;
-                            }
 
                             break;
                         }

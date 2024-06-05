@@ -12,26 +12,23 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ErSoftDev.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20230722205219_changeTableName")]
-    partial class changeTableName
+    [Migration("20240605123913_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate.Role", b =>
+            modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.OperateAggregate.Operate", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -39,17 +36,43 @@ namespace ErSoftDev.Identity.Infrastructure.Migrations
                     b.Property<long>("CreatorUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("DeletedAt")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("DeleterUserId")
+                    b.Property<long?>("UpdaterUserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Operates", "dbo");
+                });
+
+            modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate.Role", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatorUserId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
@@ -66,6 +89,36 @@ namespace ErSoftDev.Identity.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", "dbo");
+                });
+
+            modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate.RoleOperate", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("OperateId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("UpdaterUserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleOperates", "dbo");
                 });
 
             modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate.User", b =>
@@ -102,6 +155,9 @@ namespace ErSoftDev.Identity.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -114,6 +170,10 @@ namespace ErSoftDev.Identity.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("SaltPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStampToken")
                         .HasMaxLength(36)
@@ -242,10 +302,7 @@ namespace ErSoftDev.Identity.Infrastructure.Migrations
             modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate.UserRole", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -276,11 +333,20 @@ namespace ErSoftDev.Identity.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", "dbo");
+                });
+
+            modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate.RoleOperate", b =>
+                {
+                    b.HasOne("ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate.Role", "Role")
+                        .WithMany("RoleOperates")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate.User", b =>
@@ -295,6 +361,15 @@ namespace ErSoftDev.Identity.Infrastructure.Migrations
                                 .HasColumnType("nvarchar")
                                 .HasColumnName("AddressLine");
 
+                            b1.Property<long>("CityId")
+                                .HasColumnType("bigint")
+                                .HasColumnName("CityId");
+
+                            b1.Property<string>("CityName")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar")
+                                .HasColumnName("CityName");
+
                             b1.Property<string>("Plaque")
                                 .HasMaxLength(20)
                                 .HasColumnType("nvarchar")
@@ -304,6 +379,15 @@ namespace ErSoftDev.Identity.Infrastructure.Migrations
                                 .HasMaxLength(10)
                                 .HasColumnType("varchar")
                                 .HasColumnName("PostalCode");
+
+                            b1.Property<long>("StateId")
+                                .HasColumnType("bigint")
+                                .HasColumnName("StateId");
+
+                            b1.Property<string>("StateName")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar")
+                                .HasColumnName("StateName");
 
                             b1.Property<string>("Unit")
                                 .HasMaxLength(20)
@@ -345,26 +429,18 @@ namespace ErSoftDev.Identity.Infrastructure.Migrations
 
             modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate.UserRole", b =>
                 {
-                    b.HasOne("ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate.Role", b =>
                 {
-                    b.Navigation("UserRoles");
+                    b.Navigation("RoleOperates");
                 });
 
             modelBuilder.Entity("ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate.User", b =>

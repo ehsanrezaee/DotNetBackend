@@ -26,6 +26,14 @@ namespace ErSoftDev.Identity.Infrastructure.EntityConfigurations
                 {
                     cb.Property(address => address.AddressLine).HasColumnName(nameof(Address.AddressLine))
                         .HasMaxLength(500).HasColumnType("nvarchar").IsRequired(false);
+                    cb.Property(address => address.StateId).HasColumnName(nameof(Address.StateId))
+                        .IsRequired();
+                    cb.Property(address => address.StateName).HasColumnName(nameof(Address.StateName))
+                        .HasMaxLength(100).HasColumnType("nvarchar").IsRequired(false);
+                    cb.Property(address => address.CityId).HasColumnName(nameof(Address.CityId))
+                        .IsRequired();
+                    cb.Property(address => address.CityName).HasColumnName(nameof(Address.CityName))
+                        .HasMaxLength(100).HasColumnType("nvarchar").IsRequired(false);
                     cb.Property(address => address.Plaque).HasColumnName(nameof(Address.Plaque))
                         .HasMaxLength(20).HasColumnType("nvarchar").IsRequired(false);
                     cb.Property(address => address.PostalCode).HasColumnName(nameof(Address.PostalCode))

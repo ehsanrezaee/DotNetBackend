@@ -23,12 +23,10 @@ namespace ErSoftDev.Identity.Application.Command
         public async Task<ApiResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.Get(
-                user => string.Equals(user.Username, request.Username,
-                    StringComparison.CurrentCultureIgnoreCase) && user.IsDeleted == false,
+                u => u.Username.ToLower() == request.Username.ToLower() && u.IsDeleted == false,
                 cancellationToken);
             if (user != null)
                 throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.AlreadyExists);
-
 
             var md5Password = SecurityHelper.GetMd5(request.Password);
 

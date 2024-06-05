@@ -3,9 +3,9 @@
     {
       "UseServiceDiscovery": true,
       "ServiceName": "Identity",
-      "UpstreamPathTemplate": "/api/{version}/Account/Login",
-      "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/api/{version}/Account/Login",
+      "UpstreamPathTemplate": "/Identity/{everything}}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+      "DownstreamPathTemplate": "/Identity/{everything}}",
       "DownstreamScheme": "http",
       "SwaggerKey": "Identity",
       "Priority": 1,
@@ -13,62 +13,62 @@
       "LoadBalancerOptions": {
         "Type": "LeastConnection"
       }
-    },
-    {
-      "UseServiceDiscovery": true,
-      "ServiceName": "Identity",
-      "UpstreamPathTemplate": "/api/{version}/Account/Register",
-      "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/api/{version}/Account/Register",
-      "DownstreamScheme": "http",
-      "SwaggerKey": "Identity",
-      "Priority": 1,
-      "ReRoutesCaseSensitive": false,
-      "LoadBalancerOptions": {
-        "Type": "LeastConnection"
-      }
-    },
-    {
-      "UseServiceDiscovery": true,
-      "ServiceName": "Identity",
-      "UpstreamPathTemplate": "/api/{version}/Account/Update",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "DownstreamPathTemplate": "/api/{version}/Account/Update",
-      "DownstreamScheme": "http",
-      "SwaggerKey": "Identity",
-      "Priority": 1,
-      "ReRoutesCaseSensitive": false,
-      "LoadBalancerOptions": {
-        "Type": "LeastConnection"
-      }
-    },
-    {
-      "UseServiceDiscovery": true,
-      "ServiceName": "Identity",
-      "UpstreamPathTemplate": "/api/{version}/Account/GetRefreshToken",
-      "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/api/{version}/Account/GetRefreshToken",
-      "DownstreamScheme": "http",
-      "SwaggerKey": "Identity",
-      "Priority": 1,
-      "ReRoutesCaseSensitive": false,
-      "LoadBalancerOptions": {
-        "Type": "LeastConnection"
-      }
-    },
-    {
-      "UseServiceDiscovery": true,
-      "ServiceName": "Identity",
-      "UpstreamPathTemplate": "/api/{version}/Account/RevokeRefreshToken",
-      "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/api/{version}/Account/RevokeRefreshToken",
-      "DownstreamScheme": "http",
-      "SwaggerKey": "Identity",
-      "Priority": 1,
-      "ReRoutesCaseSensitive": false,
-      "LoadBalancerOptions": {
-        "Type": "LeastConnection"
-      }
-    }
+      //},
+      //{
+      //  "UseServiceDiscovery": true,
+      //  "ServiceName": "Identity",
+      //  "UpstreamPathTemplate": "/api/{version}/Account/Register",
+      //  "UpstreamHttpMethod": [ "POST" ],
+      //  "DownstreamPathTemplate": "/api/{version}/Account/Register",
+      //  "DownstreamScheme": "http",
+      //  "SwaggerKey": "Identity",
+      //  "Priority": 1,
+      //  "ReRoutesCaseSensitive": false,
+      //  "LoadBalancerOptions": {
+      //    "Type": "LeastConnection"
+      //  }
+      //},
+      //{
+      //  "UseServiceDiscovery": true,
+      //  "ServiceName": "Identity",
+      //  "UpstreamPathTemplate": "/api/{version}/Account/Update",
+      //  "UpstreamHttpMethod": [ "PUT" ],
+      //  "DownstreamPathTemplate": "/api/{version}/Account/Update",
+      //  "DownstreamScheme": "http",
+      //  "SwaggerKey": "Identity",
+      //  "Priority": 1,
+      //  "ReRoutesCaseSensitive": false,
+      //  "LoadBalancerOptions": {
+      //    "Type": "LeastConnection"
+      //  }
+      //},
+      //{
+      //  "UseServiceDiscovery": true,
+      //  "ServiceName": "Identity",
+      //  "UpstreamPathTemplate": "/api/{version}/Account/GetRefreshToken",
+      //  "UpstreamHttpMethod": [ "POST" ],
+      //  "DownstreamPathTemplate": "/api/{version}/Account/GetRefreshToken",
+      //  "DownstreamScheme": "http",
+      //  "SwaggerKey": "Identity",
+      //  "Priority": 1,
+      //  "ReRoutesCaseSensitive": false,
+      //  "LoadBalancerOptions": {
+      //    "Type": "LeastConnection"
+      //  }
+      //},
+      //{
+      //  "UseServiceDiscovery": true,
+      //  "ServiceName": "Identity",
+      //  "UpstreamPathTemplate": "/api/{version}/Account/RevokeRefreshToken",
+      //  "UpstreamHttpMethod": [ "POST" ],
+      //  "DownstreamPathTemplate": "/api/{version}/Account/RevokeRefreshToken",
+      //  "DownstreamScheme": "http",
+      //  "SwaggerKey": "Identity",
+      //  "Priority": 1,
+      //  "ReRoutesCaseSensitive": false,
+      //  "LoadBalancerOptions": {
+      //    "Type": "LeastConnection"
+      //  }
+      //}
   ]
 }

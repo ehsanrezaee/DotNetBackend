@@ -44,7 +44,11 @@ namespace ErSoftDev.Identity.Application.Command
                 return new ApiResult<LoginResponse>(_stringLocalizer, ApiResultStatusCode.Success, loginFromCache);
 
             var user = await _userRepository.GetUserByUsername(request.Username, cancellationToken);
-            if (user is null || SecurityHelper.GetMd5(request.Password, user.SaltPassword).EncrypedData !=
+            if (user is null)
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.UserNotFound);
+            if (!user.IsActive)
+                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.UserIsNotActive);
+            if (SecurityHelper.GetMd5(request.Password, user.SaltPassword).EncrypedData !=
                 user.Password)
                 throw new AppException(ApiResultStatusCode.Failed,
                     IdentityResultErrorCode.UsernameOrPasswordIsNotCorrect);

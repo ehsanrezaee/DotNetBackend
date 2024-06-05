@@ -1,12 +1,14 @@
 ﻿using ErSoftDev.DomainSeedWork;
-using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 {
-    public class UserRole : BaseEntity<long>
+    public class UserRole : BaseEntity<long>, ISoftDelete
     {
         public long UserId { get; private set; }
         public long RoleId { get; private set; }
+        public bool IsDeleted { get; set; }
+        public long? DeleterUserId { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
         public User User { get; private set; }
 

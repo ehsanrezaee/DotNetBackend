@@ -2,7 +2,12 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Pluralize.NET;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using ErSoftDev.Common.Utilities;
+using System.Linq.Expressions;
+using ErSoftDev.DomainSeedWork;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace ErSoftDev.Framework.BaseModel
 {
@@ -121,10 +126,30 @@ namespace ErSoftDev.Framework.BaseModel
                     c => c.IsClass &&
                          !c.IsAbstract &&
                          c.IsPublic &&
-                         typeof(TBaseType).IsAssignableFrom(c)); // کلاس هایی که از کلاس یا اینترفیس وارد شده به این متد ارث بری کرده باشد
+                         typeof(TBaseType).IsAssignableFrom(c));
 
             foreach (var type in types)
                 modelBuilder.Entity(type);
+        }
+
+        public static void SoftDeleteQueryFilter<TBaseType>(this ModelBuilder modelBuilder,
+            params Assembly[] assemblies)
+        {
+            var types = assemblies.Where(assembly => assembly.IsDynamic == false).SelectMany(a => a.GetExportedTypes())
+                .Where(
+                    c => c is { IsClass: true, IsAbstract: false, IsPublic: true } &&
+                         typeof(TBaseType).IsAssignableFrom(c));
+
+            Expression<Func<ISoftDelete, bool>> filterExpr = bm => !bm.IsDeleted;
+            foreach (var type in types)
+            {
+                var parameter = Expression.Parameter(type);
+                var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter,
+                    filterExpr.Body);
+                var lambdaExpression = Expression.Lambda(body, parameter);
+
+                modelBuilder.Entity(type).HasQueryFilter(lambdaExpression);
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ErSoftDev.Identity.Application.Queries
         }
         public async Task<ApiResult<PagedResult<OperateDto>>> Handle(GetOperatesQuery request, CancellationToken cancellationToken)
         {
-            var operates = await _identityQueryDbContext.Operates.Where(operate => operate.IsDeleted == false &&
+            var operates = await _identityQueryDbContext.Operates.Where(operate =>
                     (request.Title == null || EF.Functions.Like(operate.Title, "%" + request.Title + "%"))).Select(
                     operate => new
                     {

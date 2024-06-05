@@ -35,5 +35,10 @@ namespace ErSoftDev.Identity.Infrastructure.Repositories
         {
             return await _identityDbContext.Roles.Where(predicate).ToListAsync(cancellationToken);
         }
+
+        public void Delete(Role tObject)
+        {
+            _identityDbContext.Remove(tObject);
+        }
     }
 }

@@ -5,7 +5,7 @@ using ErSoftDev.Identity.Domain.SeedWorks;
 
 namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 {
-    public class User : BaseEntity<long>, IAggregateRoot
+    public class User : BaseEntity<long>, ISoftDelete, IAggregateRoot
     {
         public string Firstname { get; private set; }
         public string Lastname { get; private set; }
@@ -18,6 +18,9 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
         public string SecurityStampToken { get; private set; }
         public bool IsActive { get; set; }
         public Address? Address { get; private set; }
+        public bool IsDeleted { get; set; }
+        public long? DeleterUserId { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
         private readonly List<UserRole> _userRoles = new();
         public IReadOnlyCollection<UserRole> UserRoles => _userRoles;
@@ -61,7 +64,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
             Password = password;
             CreatorUserId = id;
             SaltPassword = saltPassword;
-            IsActive = IsActive;
+            IsActive = isActive;
         }
 
         public void Update(string? firstname, string? lastname, string? cellPhone, string? email, Address? address, bool? isActive)
@@ -101,10 +104,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
 
             var refreshToken = NewRefreshToken();
 
-            var previousRefreshTokens = _userRefreshTokens.Where(token =>
-                token is { IsActive: true, IsRevoke: false, IsUse: false });
-            foreach (var previousRefreshToken in previousRefreshTokens)
-                previousRefreshToken?.DeletePreviousRefreshToken();
+            _userRefreshTokens.RemoveAll(token => true);
 
             _userRefreshTokens.Add(new UserRefreshToken(refreshTokenId, Id, refreshToken, true, false, false,
                 refreshTokenExpiry));
@@ -136,10 +136,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
         {
             SecurityStampToken = securityStampToken;
 
-            var previousRefreshTokens = _userRefreshTokens.Where(token =>
-                token is { IsActive: true, IsRevoke: false, IsUse: false });
-            foreach (var previousRefreshToken in previousRefreshTokens)
-                previousRefreshToken?.DeletePreviousRefreshToken();
+            _userRefreshTokens.RemoveAll(token => true);
 
             var refreshToken = NewRefreshToken();
             _userRefreshTokens.Add(new UserRefreshToken(id, Id, refreshToken, true, false, false,

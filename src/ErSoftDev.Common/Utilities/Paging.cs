@@ -41,7 +41,7 @@ namespace ErSoftDev.Common.Utilities
         public int PageSize { get; set; } = 10;
         public int PageNumber { get; set; } = 0;
         public string OrderBy { get; set; }
-        public OrderType OrderType { get; set; } = OrderType.Asc;
+        public string OrderType { get; set; } = "Desc";
     }
 
     public enum OrderType

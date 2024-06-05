@@ -11,5 +11,7 @@ namespace ErSoftDev.DomainSeedWork
         Task<T?> Get(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
 
         Task<List<T>?> GetList(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
+
+        void Delete(T tObject);
     }
 }
