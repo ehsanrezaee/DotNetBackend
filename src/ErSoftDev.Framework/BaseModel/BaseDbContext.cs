@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Linq;
 using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
@@ -70,12 +69,6 @@ namespace ErSoftDev.Framework.BaseModel
                                     foreignKey.DeclaringEntityType.ClrType.BaseType?.Name != nameof(ValueObject));
                                 if (collectionCount != entry.Collections.Count())
                                     throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.DbError);
-
-
-                                //foreach (var collection in entry.Collections)
-                                //{
-                                //    if(collection.)
-                                //}
 
                                 entry.State = EntityState.Modified;
                                 if (entry.Properties.Any(e =>

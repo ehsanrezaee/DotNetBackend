@@ -90,6 +90,9 @@ namespace ErSoftDev.ApiGateway.Extensions
                         if (isAuthenticateAndAuthorize.Status != ApiResultStatusCode.Success.Id)
                             throw new AppException(new Exception(), ApiResultStatusCode.Failed,
                                 ApiGatewayResultErrorCode.SecurityStampTokenIsNotValid, null, HttpStatusCode.Unauthorized);
+
+                        context.HttpContext.Request.Headers.Append("ClientIp",
+                            context.HttpContext?.Connection?.RemoteIpAddress?.ToString());
                     }
                 };
 
