@@ -39,5 +39,10 @@ namespace ErSoftDev.Common.Utilities
 
             return "0";
         }
+
+        public static string? CustomClientIp(this IHttpContextAccessor accessor)
+        {
+            return accessor?.HttpContext?.Request.Headers["ClientIp"];
+        }
     }
 }

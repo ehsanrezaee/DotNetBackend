@@ -5,6 +5,7 @@ using ErSoftDev.Framework.Configuration;
 using ErSoftDev.Identity.EndPoint.Grpc.Protos;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.HttpOverrides;
 using Ocelot.Middleware;
 
 namespace ErSoftDev.ApiGateway
