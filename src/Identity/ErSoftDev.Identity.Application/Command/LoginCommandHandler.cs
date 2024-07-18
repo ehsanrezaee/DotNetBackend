@@ -4,6 +4,7 @@ using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Jwt;
 using ErSoftDev.Framework.Redis;
+using ErSoftDev.Identity.Domain;
 using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 using ErSoftDev.Identity.Domain.SeedWorks;
 using IdGen;
@@ -22,10 +23,11 @@ namespace ErSoftDev.Identity.Application.Command
         private readonly IIdGenerator<long> _idGenerator;
         private readonly IStringLocalizer<SharedTranslate> _stringLocalizer;
         private readonly IRedisService _redisService;
+        private readonly IStringLocalizer<IdentityTranslate> _identityStringLocalizer;
 
         public LoginCommandHandler(IJwtService jwtService, IUserRepository userRepository,
             IOptions<AppSetting> appSetting, IIdGenerator<long> idGenerator,
-            IStringLocalizer<SharedTranslate> stringLocalizer, IRedisService redisService)
+            IStringLocalizer<SharedTranslate> stringLocalizer, IRedisService redisService, IStringLocalizer<IdentityTranslate> identityStringLocalizer)
         {
             _jwtService = jwtService;
             _userRepository = userRepository;
@@ -33,6 +35,7 @@ namespace ErSoftDev.Identity.Application.Command
             _idGenerator = idGenerator;
             _stringLocalizer = stringLocalizer;
             _redisService = redisService;
+            _identityStringLocalizer = identityStringLocalizer;
         }
 
         public async Task<ApiResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -45,12 +48,12 @@ namespace ErSoftDev.Identity.Application.Command
 
             var user = await _userRepository.GetUserByUsername(request.Username, cancellationToken);
             if (user is null)
-                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.UserNotFound);
+                throw new AppException(_identityStringLocalizer, ApiResultStatusCode.Failed, IdentityResultErrorCode.UserNotFound);
             if (!user.IsActive)
-                throw new AppException(ApiResultStatusCode.Failed, IdentityResultErrorCode.UserIsNotActive);
+                throw new AppException(_identityStringLocalizer, ApiResultStatusCode.Failed, IdentityResultErrorCode.UserIsNotActive);
             if (SecurityHelper.GetMd5(request.Password, user.SaltPassword).EncrypedData !=
                 user.Password)
-                throw new AppException(ApiResultStatusCode.Failed,
+                throw new AppException(_identityStringLocalizer, ApiResultStatusCode.Failed,
                     IdentityResultErrorCode.UsernameOrPasswordIsNotCorrect);
 
             var securityStampToken = Guid.NewGuid().ToString();
@@ -80,7 +83,7 @@ namespace ErSoftDev.Identity.Application.Command
                 CacheKey.Login + ":" + request.Username + ":" + SecurityHelper.GetMd5(request.Password), response,
                 TimeSpan.FromMinutes((token.TokenExpiry - DateTime.Now).TotalMinutes - 1));
 
-            return new ApiResult<LoginResponse>(_stringLocalizer, ApiResultStatusCode.Success, response);
+            return new ApiResult<LoginResponse>(_identityStringLocalizer, ApiResultStatusCode.Success, response);
         }
 
 
