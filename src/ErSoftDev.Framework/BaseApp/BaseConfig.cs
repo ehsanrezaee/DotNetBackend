@@ -51,8 +51,11 @@ namespace ErSoftDev.Framework.BaseApp
 
         public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppSetting appSetting)
         {
+            app.UseRouting();
             app.UseCustomRequestLocalization();
+            app.UseCustomStringLocalizer();
             app.UseCustomExceptionMiddleware();
+            app.UseCustomJwtTokenValidation();
             app.UseHstsNotInDevelopment(env);
             app.UseHttpsRedirection();
             app.UseCustomHealthCheck();
@@ -60,11 +63,9 @@ namespace ErSoftDev.Framework.BaseApp
             app.UseAuthentication();
             app.UseMvc();
             app.UseCustomStaticFile();
-            app.UseRouting();
             app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
             app.UseCustomConsul(appSetting);
             app.UseCustomHangFireDashboard(appSetting);
-
             app.UseEndpoints(builder =>
             {
                 builder.MapGet("/",

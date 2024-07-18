@@ -47,7 +47,6 @@
         "ASPNETCORE_ENVIRONMENT": "Docker"
       },
       "httpPort": 5202
-
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json",

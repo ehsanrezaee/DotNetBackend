@@ -1,6 +1,6 @@
 ﻿namespace ErSoftDev.DomainSeedWork
 {
-    public abstract class SharedTranslate
+    public partial class SharedTranslate
     {
     }
 }

@@ -51,6 +51,11 @@ namespace ErSoftDev.Framework.Configuration
             app.UseMiddleware<RateLimitationMiddleware>();
         }
 
+        public static void UseCustomJwtTokenValidation(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<CustomJwtTokenValidationMiddleware>();
+        }
+
         public static void UseCustomStaticFile(this IApplicationBuilder app)
         {
             var provider = new FileExtensionContentTypeProvider();

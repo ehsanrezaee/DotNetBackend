@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -15,6 +16,13 @@ namespace ErSoftDev.ApiGateway.Extensions
 {
     public static class ServiceCollectionExtension
     {
+        private static IHttpContextAccessor _httpContextAccessor;
+
+        public static void Configure(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+        public static HttpContext Current => _httpContextAccessor.HttpContext;
         public static void AddCustomApiGatewayJwtAuthentication(this IServiceCollection services, Jwt jwt)
         {
             services.AddAuthentication(options =>
@@ -31,7 +39,7 @@ namespace ErSoftDev.ApiGateway.Extensions
                 var validationParameters = new TokenValidationParameters
                 {
                     ClockSkew = TimeSpan.Zero, // default: 5 min 
-                    RequireSignedTokens = true,
+                    //RequireSignedTokens = true,
                     ValidateLifetime = true,
                     RequireExpirationTime = true,
 
@@ -44,7 +52,8 @@ namespace ErSoftDev.ApiGateway.Extensions
                     ValidateIssuer = false,
                     ValidIssuer = issuer,
 
-                    TokenDecryptionKey = new SymmetricSecurityKey(encryptKey)
+                    TokenDecryptionKey = new SymmetricSecurityKey(encryptKey),
+
                 };
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;

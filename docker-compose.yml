@@ -1,6 +1,4 @@
-﻿version : '3.1'
-
-services : 
+﻿services : 
     elasticsearch : 
         container_name : elasticsearch
         image : docker.elastic.co/elasticsearch/elasticsearch:8.7.1
@@ -72,6 +70,17 @@ services :
     mongo:
         image: mongo
         restart: always
+        
+    enginx:
+        image: 'jc21/nginx-proxy-manager:latest'
+        restart: unless-stopped
+        ports:
+        - '80:80'
+        - '81:81'
+        - '443:443'    
+        volumes:
+        - ./data:/data
+        - ./letsencrypt:/etc/letsencrypt
             
 networks : 
     elastic :
@@ -80,6 +89,7 @@ networks :
 volumes : 
     elasticsearch-data :
     redis_volume_data:
+   
 
 
         
