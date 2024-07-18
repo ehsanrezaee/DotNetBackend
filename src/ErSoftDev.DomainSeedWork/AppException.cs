@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using ErSoftDev.DomainSeedWork;
+using Microsoft.Extensions.Localization;
 
 namespace ErSoftDev.DomainSeedWork
 {
@@ -9,6 +10,7 @@ namespace ErSoftDev.DomainSeedWork
         public ApiResultErrorCode ApiResultErrorCode { get; }
         public Exception? Exception { get; }
         public HttpStatusCode? HttpStatusCode { get; set; }
+        public IStringLocalizer StringLocalizer { get; set; }
 
         public AppException(Exception? exception)
         {
@@ -33,18 +35,26 @@ namespace ErSoftDev.DomainSeedWork
             ApiResultErrorCode = apiResultErrorCode;
             HttpStatusCode = httpStatusCode;
         }
+
+        public AppException(IStringLocalizer stringLocalizer, ApiResultStatusCode apiResultStatusCode, ApiResultErrorCode apiResultErrorCode,
+            string? message = null, HttpStatusCode? httpStatusCode = null)
+            : base(message ?? string.Empty)
+        {
+            ApiResultStatusCode = apiResultStatusCode;
+            ApiResultErrorCode = apiResultErrorCode;
+            HttpStatusCode = httpStatusCode;
+            StringLocalizer = stringLocalizer;
+        }
     }
 
 
-    public class AppException<TEntity> : AppException
+    public class AppException<TStringLocalizer> : AppException
     {
-        private new TEntity Data { get; }
-        public AppException(Exception? exception, ApiResultStatusCode apiResultStatusCode, TEntity entity, ApiResultErrorCode apiResultErrorCode, string? message = null)
-            : base(exception, apiResultStatusCode, apiResultErrorCode, message)
+        public AppException(IStringLocalizer<TStringLocalizer> stringLocalizer, ApiResultStatusCode apiResultStatusCode,
+            ApiResultErrorCode apiResultErrorCode, string? message = null,
+            HttpStatusCode? httpStatusCode = null) : base(stringLocalizer, apiResultStatusCode, apiResultErrorCode,
+            message, httpStatusCode)
         {
-            Data = entity;
         }
-
-
     }
 }

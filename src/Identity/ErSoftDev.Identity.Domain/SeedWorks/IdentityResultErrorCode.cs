@@ -16,6 +16,7 @@ namespace ErSoftDev.Identity.Domain.SeedWorks
         public static IdentityResultErrorCode UserIsNotLogin => new(108, nameof(UserIsNotLogin));
         public static IdentityResultErrorCode UserNotFound => new(109, nameof(UserNotFound));
         public static IdentityResultErrorCode UserIsNotActive => new(109, nameof(UserIsNotActive));
+        public static IdentityResultErrorCode Test => new(110, nameof(Test));
 
         protected IdentityResultErrorCode(int id, string name) : base(id, name)
         {

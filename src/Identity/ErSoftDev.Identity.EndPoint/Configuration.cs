@@ -3,6 +3,7 @@ using ErSoftDev.Identity.Application.IntegrationEvents;
 using ErSoftDev.Identity.Infrastructure;
 using EventBus.Base.Standard.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ErSoftDev.Identity.EndPoint
 {
@@ -23,6 +24,8 @@ namespace ErSoftDev.Identity.EndPoint
             services.AddDbContext<IdentityQueryDbContext>(builder =>
                 builder.UseSqlServer(_appSetting.ConnectionString.AppConnectionString)
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.AddEventBusHandling(IntegrationEventExtension.GetHandlers());
             base.ConfigureServices(services, webHostEnvironment);
