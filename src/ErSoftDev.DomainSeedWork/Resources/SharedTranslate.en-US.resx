@@ -207,4 +207,7 @@
   <data name="UserIsNotActive" xml:space="preserve">
     <value>User is not active</value>
   </data>
+  <data name="AuthorizationFailed" xml:space="preserve">
+    <value>Not allow to use  requested operate</value>
+  </data>
 </root>

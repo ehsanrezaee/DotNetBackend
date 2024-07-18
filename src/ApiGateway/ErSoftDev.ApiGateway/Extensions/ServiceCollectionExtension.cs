@@ -11,6 +11,8 @@ using ErSoftDev.ApiGateway.SeedWorks;
 using ErSoftDev.Common.Utilities;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
+using Microsoft.Extensions.Localization;
+using Newtonsoft.Json;
 
 namespace ErSoftDev.ApiGateway.Extensions
 {
@@ -25,6 +27,7 @@ namespace ErSoftDev.ApiGateway.Extensions
         public static HttpContext Current => _httpContextAccessor.HttpContext;
         public static void AddCustomApiGatewayJwtAuthentication(this IServiceCollection services, Jwt jwt)
         {
+            var firstUse = true;
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,36 +63,58 @@ namespace ErSoftDev.ApiGateway.Extensions
                 options.TokenValidationParameters = validationParameters;
                 options.Events = new JwtBearerEvents
                 {
-                    OnAuthenticationFailed = context =>
+                    OnAuthenticationFailed = async context =>
                     {
+                        var stringLocalizer = context.HttpContext.RequestServices
+                            .GetRequiredService<IStringLocalizer<SharedTranslate>>();
+
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.HttpContext.Response.ContentType = "application/json";
+
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                            throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.TokenIsExpired, null, HttpStatusCode.Unauthorized);
-
-                        if (context.Exception.GetType() == typeof(RpcException))
-                            throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiGatewayResultErrorCode.IdentityServerIsNotAvailable, null, HttpStatusCode.Unauthorized);
-
-                        if (context.Exception.GetType() != typeof(AppException))
-                            throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.TokenIsNotValid, null, HttpStatusCode.Unauthorized);
-                        return Task.CompletedTask;
+                            await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
+                                ApiResultStatusCode.Failed, ApiResultErrorCode.TokenIsExpired)));
+                        else if (context.Exception.GetType() == typeof(RpcException))
+                            await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
+                                ApiResultStatusCode.Failed, ApiGatewayResultErrorCode.IdentityServerIsNotAvailable)));
+                        else
+                            await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
+                                ApiResultStatusCode.Failed, ApiResultErrorCode.TokenIsNotValid)));
                     },
                     OnTokenValidated = async context =>
                     {
                         var claimsIdentity = context.Principal?.Identity as ClaimsIdentity;
                         if (claimsIdentity?.Claims.Any() != true)
-                            throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.TokenHasNotClaim, null, HttpStatusCode.Unauthorized);
+                        {
+                            var stringLocalizer = context.HttpContext.RequestServices
+                                .GetRequiredService<IStringLocalizer<SharedTranslate>>();
+
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            context.HttpContext.Response.ContentType = "application/json";
+                            await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
+                                ApiResultStatusCode.Failed, ApiResultErrorCode.TokenHasNotClaim)));
+
+                            return;
+                        }
 
                         var securityStamp =
                             claimsIdentity.FindFirstValue(new ClaimsIdentityOptions().SecurityStampClaimType);
                         if (securityStamp == null)
-                            throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiResultErrorCode.TokenIsNotSafeWithSecurityStamp, null, HttpStatusCode.Unauthorized);
+                        {
+                            var stringLocalizer = context.HttpContext.RequestServices
+                                .GetRequiredService<IStringLocalizer<SharedTranslate>>();
+
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            context.HttpContext.Response.ContentType = "application/json";
+                            await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
+                                ApiResultStatusCode.Failed, ApiResultErrorCode.TokenIsExpired)));
+
+                            return;
+                        }
 
                         var accountService = context.HttpContext.RequestServices
                             .GetRequiredService<IAccountService>();
+
                         var actionPrefix = context.HttpContext.Request.Path.ToString().Split('/');
                         var actionName = actionPrefix[1] + "/" + actionPrefix[3] + "/" + actionPrefix[4] + "/" +
                                          actionPrefix[5] + "/";
@@ -97,8 +122,17 @@ namespace ErSoftDev.ApiGateway.Extensions
                         var isAuthenticateAndAuthorize =
                             await accountService.CheckAuthenticateAndAuthorization(securityStamp, actionName);
                         if (isAuthenticateAndAuthorize.Status != ApiResultStatusCode.Success.Id)
-                            throw new AppException(new Exception(), ApiResultStatusCode.Failed,
-                                ApiGatewayResultErrorCode.SecurityStampTokenIsNotValid, null, HttpStatusCode.Unauthorized);
+                        {
+                            var stringLocalizer = context.HttpContext.RequestServices
+                                .GetRequiredService<IStringLocalizer<SharedTranslate>>();
+
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            context.HttpContext.Response.ContentType = "application/json";
+                            await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
+                                ApiResultStatusCode.Failed, ApiGatewayResultErrorCode.AuthorizationFailed)));
+
+                            return;
+                        }
 
                         context.HttpContext.Request.Headers.Append("ClientIp",
                             context.HttpContext?.Connection?.RemoteIpAddress?.ToString());

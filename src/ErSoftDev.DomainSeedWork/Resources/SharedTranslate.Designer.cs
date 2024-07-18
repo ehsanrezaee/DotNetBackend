@@ -88,6 +88,15 @@ namespace ErSoftDev.DomainSeedWork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مجاز به انجام عملیات درخواستی نمی باشید.
+        /// </summary>
+        internal static string AuthorizationFailed {
+            get {
+                return ResourceManager.GetString("AuthorizationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to یکی از پارامتر های ارسالی ایراد دارد.
         /// </summary>
         internal static string BadRequest {

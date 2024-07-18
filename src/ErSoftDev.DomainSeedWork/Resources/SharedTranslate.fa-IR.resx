@@ -207,4 +207,7 @@
   <data name="UserIsNotActive" xml:space="preserve">
     <value>کاربر غیر فعال می باشد</value>
   </data>
+  <data name="AuthorizationFailed" xml:space="preserve">
+    <value>مجاز به انجام عملیات درخواستی نمی باشد</value>
+  </data>
 </root>
