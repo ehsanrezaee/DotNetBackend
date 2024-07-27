@@ -40,8 +40,6 @@ namespace ErSoftDev.ApiGateway
             services.AddCustomLocalization();
             services.AddJaeger(_appSetting);
             services.AddHealthChecks().AddCheck<IdentityGrpcServiceHealthCheck>("IdentityGrpcServiceHealthCheck");
-
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppSetting appsetting)
