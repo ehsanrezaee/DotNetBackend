@@ -48,13 +48,13 @@ namespace ErSoftDev.Identity.Application.Command
 
             var user = await _userRepository.GetUserByUsername(request.Username, cancellationToken);
             if (user is null)
-                throw new AppException(_identityStringLocalizer, ApiResultStatusCode.Failed, IdentityResultErrorCode.UserNotFound);
+                throw new AppException(_identityStringLocalizer, IdentityResultStatusCode.UserNotFound);
             if (!user.IsActive)
-                throw new AppException(_identityStringLocalizer, ApiResultStatusCode.Failed, IdentityResultErrorCode.UserIsNotActive);
+                throw new AppException(_identityStringLocalizer, IdentityResultStatusCode.UserIsNotActive);
             if (SecurityHelper.GetMd5(request.Password, user.SaltPassword).EncrypedData !=
                 user.Password)
-                throw new AppException(_identityStringLocalizer, ApiResultStatusCode.Failed,
-                    IdentityResultErrorCode.UsernameOrPasswordIsNotCorrect);
+                throw new AppException(_identityStringLocalizer,
+                    IdentityResultStatusCode.UsernameOrPasswordIsNotCorrect);
 
             var securityStampToken = Guid.NewGuid().ToString();
             var refreshTokenExpiry = DateTime.Now.AddSeconds(_appSetting.Value.Jwt.RefreshTokenExpirySecond);
@@ -67,7 +67,7 @@ namespace ErSoftDev.Identity.Application.Command
                 Subject = SetTokenClaim(securityStampToken, user.Id)
             });
             if (token.Token is null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.LogicError);
+                throw new AppException(ApiResultStatusCode.LogicError);
 
             await _userRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 

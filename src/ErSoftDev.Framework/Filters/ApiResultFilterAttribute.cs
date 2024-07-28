@@ -23,7 +23,7 @@ namespace ErSoftDev.Framework.Filters
             }
             else if (context.Result is BadRequestResult)
             {
-                context.Result = new JsonResult(new ApiResult(stringLocalizer, ApiResultStatusCode.Failed, ApiResultErrorCode.BadRequest));
+                context.Result = new JsonResult(new ApiResult(stringLocalizer, ApiResultStatusCode.BadRequest));
             }
             else if (context.Result is BadRequestObjectResult badRequestObjectResult)
             {
@@ -31,7 +31,7 @@ namespace ErSoftDev.Framework.Filters
                 if (badRequestObjectResult.Value is ValidationProblemDetails errors)
                     message = errors.Errors.Aggregate(message, (current, item) => current + (" " + item.Key));
 
-                context.Result = new JsonResult(new ApiResult(stringLocalizer, ApiResultStatusCode.Failed, ApiResultErrorCode.BadRequest, message));
+                context.Result = new JsonResult(new ApiResult(stringLocalizer, ApiResultStatusCode.BadRequest));
             }
             else if (context.Result is ContentResult)
             {
@@ -39,11 +39,11 @@ namespace ErSoftDev.Framework.Filters
             }
             else if (context.Result is NotFoundResult)
             {
-                context.Result = new JsonResult(new ApiResult(stringLocalizer, ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound));
+                context.Result = new JsonResult(new ApiResult(stringLocalizer, ApiResultStatusCode.NotFound));
             }
             else if (context.Result is NotFoundObjectResult notFoundObjectResult)
             {
-                context.Result = new JsonResult(new ApiResult<object>(stringLocalizer, ApiResultStatusCode.Failed, notFoundObjectResult.Value, ApiResultErrorCode.NotFound));
+                context.Result = new JsonResult(new ApiResult<object>(stringLocalizer, ApiResultStatusCode.NotFound));
             }
             else if (context.Result is ObjectResult objectResult && !(objectResult.Value is ApiResult))
             {

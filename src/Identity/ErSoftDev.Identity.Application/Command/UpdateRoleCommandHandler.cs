@@ -19,7 +19,7 @@ namespace ErSoftDev.Identity.Application.Command
         {
             var role = await _roleRepository.Get(role => role.Id == request.Id, cancellationToken);
             if (role == null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
+                throw new AppException(ApiResultStatusCode.NotFound);
 
             role.Update(request.Title, request.Description, request.IsActive);
             await _roleRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

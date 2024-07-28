@@ -1,6 +1,7 @@
 ﻿using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.Grpc;
 using ErSoftDev.Identity.Application.Queries;
+using ErSoftDev.Identity.Domain.SeedWorks;
 using ErSoftDev.Identity.EndPoint.Grpc.Protos;
 using Grpc.Core;
 using MediatR;
@@ -24,7 +25,7 @@ namespace ErSoftDev.Identity.EndPoint.Grpc.Services
                 , context.CancellationToken);
             if (isSecurityStampTokenValid)
                 return new IsSecurityStampTokenResponseGrpc() { Status = ApiResultStatusCode.Success.Id };
-            return new IsSecurityStampTokenResponseGrpc() { Status = ApiResultStatusCode.Failed.Id };
+            return new IsSecurityStampTokenResponseGrpc() { Status = IdentityResultStatusCode.TokenIsNotValid.Id };
         }
 
         public override async Task<CheckAuthorizeResponseGrpc> CheckAuthorize(CheckAuthorizeRequestGrpc request,
@@ -34,7 +35,7 @@ namespace ErSoftDev.Identity.EndPoint.Grpc.Services
                 context.CancellationToken);
             if (isAuthorize)
                 return new CheckAuthorizeResponseGrpc() { Status = ApiResultStatusCode.Success.Id };
-            return new CheckAuthorizeResponseGrpc() { Status = ApiResultStatusCode.Failed.Id };
+            return new CheckAuthorizeResponseGrpc() { Status = ApiResultStatusCode.TokenIsNotValid.Id };
         }
 
         public override async Task<CheckAuthenticationAndAuthorizationGrpcResponse> CheckAuthenticationAndAuthorization(CheckAuthenticationAndAuthorizationGrpcRequest request,
@@ -47,7 +48,7 @@ namespace ErSoftDev.Identity.EndPoint.Grpc.Services
             if (isAuthenticateAndAuthorize)
                 return new CheckAuthenticationAndAuthorizationGrpcResponse()
                 { Status = ApiResultStatusCode.Success.Id };
-            return new CheckAuthenticationAndAuthorizationGrpcResponse() { Status = ApiResultStatusCode.Failed.Id };
+            return new CheckAuthenticationAndAuthorizationGrpcResponse() { Status = ApiResultStatusCode.TokenIsNotValid.Id };
         }
     }
 }

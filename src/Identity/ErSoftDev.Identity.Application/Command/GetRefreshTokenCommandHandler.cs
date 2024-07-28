@@ -34,7 +34,7 @@ namespace ErSoftDev.Identity.Application.Command
         {
             var user = await _userRepository.GetByRefreshToken(request.RefreshToken, cancellationToken);
             if (user == null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
+                throw new AppException(ApiResultStatusCode.NotFound);
 
             user.RefreshTokenValidationAndUpdateToUsed(request.RefreshToken);
 
@@ -48,7 +48,7 @@ namespace ErSoftDev.Identity.Application.Command
                 Subject = SetTokenClaim(securityStampToken, user.Id)
             });
             if (token.Token is null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.LogicError);
+                throw new AppException(ApiResultStatusCode.LogicError);
 
             await _userRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 

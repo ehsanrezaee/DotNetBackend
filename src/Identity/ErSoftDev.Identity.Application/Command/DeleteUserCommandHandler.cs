@@ -20,7 +20,7 @@ namespace ErSoftDev.Identity.Application.Command
         {
             var user = await _userRepository.Get(u => u.Id == request.UserId, cancellationToken);
             if (user is null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
+                throw new AppException(_stringLocalizer, ApiResultStatusCode.NotFound);
 
             _userRepository.Delete(user);
 

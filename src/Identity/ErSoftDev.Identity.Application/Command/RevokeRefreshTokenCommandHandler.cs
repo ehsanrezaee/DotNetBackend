@@ -19,7 +19,7 @@ namespace ErSoftDev.Identity.Application.Command
         {
             var user = await _userRepository.GetByRefreshToken(request.RefreshToken, cancellationToken);
             if (user == null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
+                throw new AppException(ApiResultStatusCode.NotFound);
 
             user.RevokeRefreshToken(request.RefreshToken);
 

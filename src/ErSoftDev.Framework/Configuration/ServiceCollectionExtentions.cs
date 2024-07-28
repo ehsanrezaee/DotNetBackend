@@ -120,13 +120,13 @@ namespace ErSoftDev.Framework.Configuration
 
                          if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                              await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
-                                 ApiResultStatusCode.Failed, ApiResultErrorCode.TokenIsExpired)));
+                                 ApiResultStatusCode.TokenIsExpired)));
                          else if (context.Exception.GetType() == typeof(RpcException))
                              await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
-                                 ApiResultStatusCode.Failed, ApiResultErrorCode.AnUnexpectedErrorHasOccurred)));
+                                 ApiResultStatusCode.AnUnexpectedErrorHasOccurred)));
                          else
                              await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
-                                 ApiResultStatusCode.Failed, ApiResultErrorCode.TokenIsNotValid)));
+                                 ApiResultStatusCode.TokenIsNotValid)));
                      },
                     OnTokenValidated = async context =>
                     {
@@ -139,7 +139,7 @@ namespace ErSoftDev.Framework.Configuration
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                             context.HttpContext.Response.ContentType = "application/json";
                             await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
-                                ApiResultStatusCode.Failed, ApiResultErrorCode.TokenHasNotClaim)));
+                                ApiResultStatusCode.TokenHasNotClaim)));
 
                             return;
                         }
@@ -154,7 +154,7 @@ namespace ErSoftDev.Framework.Configuration
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                             context.HttpContext.Response.ContentType = "application/json";
                             await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResult(stringLocalizer,
-                                ApiResultStatusCode.Failed, ApiResultErrorCode.TokenIsExpired)));
+                                ApiResultStatusCode.TokenIsExpired)));
 
                             return;
                         }

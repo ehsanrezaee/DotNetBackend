@@ -26,7 +26,7 @@ namespace ErSoftDev.Identity.Application.Command
                 u => u.Username.ToLower() == request.Username.ToLower() && u.IsDeleted == false,
                 cancellationToken);
             if (user != null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.AlreadyExists);
+                throw new AppException(ApiResultStatusCode.AlreadyExists);
 
             var md5Password = SecurityHelper.GetMd5(request.Password);
 
