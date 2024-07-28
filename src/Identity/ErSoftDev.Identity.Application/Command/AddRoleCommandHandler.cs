@@ -24,7 +24,7 @@ namespace ErSoftDev.Identity.Application.Command
         {
             var role = await _roleRepository.Get(role => role.Title == request.Title, cancellationToken);
             if (role is not null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.AlreadyExists);
+                throw new AppException(ApiResultStatusCode.AlreadyExists);
 
             var newRole = new Role(_idGenerator.CreateId(), request.Title, request.Description, request.Active);
             await _roleRepository.Add(newRole, cancellationToken);

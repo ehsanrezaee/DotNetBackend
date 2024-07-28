@@ -22,7 +22,7 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.RoleAggregate
             if (string.IsNullOrWhiteSpace(description))
                 parameterValidation.Append(nameof(description) + " ");
             if (parameterValidation.Length > 0)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.ParametersAreNotValid,
+                throw new AppException(ApiResultStatusCode.ParametersAreNotValid,
                     parameterValidation.ToString());
 
             Id = id;

@@ -63,12 +63,12 @@ namespace ErSoftDev.Framework.BaseModel
                                 if (entry.Collections.Any() && !entry.Collections.Any(collectionEntry =>
                                         collectionEntry.EntityEntry.Metadata.GetProperties()
                                             .Any(x => x.Name == "IsDeleted")))
-                                    throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.DbError);
+                                    throw new AppException(ApiResultStatusCode.DbError);
 
                                 var collectionCount = entry.Metadata.GetReferencingForeignKeys().Count(foreignKey =>
                                     foreignKey.DeclaringEntityType.ClrType.BaseType?.Name != nameof(ValueObject));
                                 if (collectionCount != entry.Collections.Count())
-                                    throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.DbError);
+                                    throw new AppException(ApiResultStatusCode.DbError);
 
                                 entry.State = EntityState.Modified;
                                 if (entry.Properties.Any(e =>
@@ -151,7 +151,7 @@ namespace ErSoftDev.Framework.BaseModel
             catch
             {
                 RollbackTransaction();
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.DbError);
+                throw new AppException(ApiResultStatusCode.DbError);
             }
             finally
             {

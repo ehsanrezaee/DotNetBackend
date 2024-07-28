@@ -1,44 +1,27 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using System.Reflection;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace ErSoftDev.DomainSeedWork
 {
     public class ApiResult
     {
-        private readonly IStringLocalizer _stringLocalizer;
         [JsonProperty]
         private int Status { get; set; }
         [JsonProperty]
-        private string? Description { get; set; }
+        private string Description { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        private int? ErrorCode { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        private string? ErrorDescription { get; set; }
+        private string? Message { get; set; }
 
         public ApiResult(IStringLocalizer stringLocalizer,
-            ApiResultStatusCode status, ApiResultErrorCode? errorCode = null,
-            string? errorDescription = null)
+            ApiResultStatusCode status, string? message = null
+            )
         {
-            _stringLocalizer = stringLocalizer;
+            var strLocalizer = stringLocalizer;
             Status = status.Id;
-            Description = _stringLocalizer == null || _stringLocalizer[status.ToString()].ResourceNotFound
+            Description = strLocalizer[status.ToString()].ResourceNotFound
                 ? ResourceHelper.GetValue(status.ToString())
-                : _stringLocalizer[status.ToString()];
-            ErrorCode = errorCode?.Id;
-            ErrorDescription = string.IsNullOrWhiteSpace(errorDescription) && errorCode?.Id != null
-                ? _stringLocalizer == null || stringLocalizer[errorCode.ToString()].ResourceNotFound
-                    ? ResourceHelper.GetValue(errorCode.ToString())
-                    : _stringLocalizer[errorCode.ToString()]
-                : _stringLocalizer[errorCode?.ToString() ?? string.Empty] == ""
-                    ? null
-                    : _stringLocalizer[errorCode?.ToString() ?? string.Empty] + " " + errorDescription;
+                : strLocalizer[status.ToString()];
+            Message = message;
         }
     }
 
@@ -51,13 +34,12 @@ namespace ErSoftDev.DomainSeedWork
         public TData? Data { get; set; }
 
         public ApiResult(IStringLocalizer stringLocalizer,
-            ApiResultStatusCode status, TData? data = null, ApiResultErrorCode? errorCode = null,
-            string? errorDescription = null) : base(stringLocalizer, status, errorCode,
-            errorDescription)
+            ApiResultStatusCode status, TData? data = null, string? message = null) : base(stringLocalizer, status, message)
         {
             _stringLocalizer = stringLocalizer;
             Data = data;
         }
+
     }
 
     public static class ResourceHelper

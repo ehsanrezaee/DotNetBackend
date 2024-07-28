@@ -35,8 +35,7 @@ namespace ErSoftDev.Framework.Middlewares
                         httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         httpContext.Response.ContentType = "Application/json";
                         await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(
-                            new ApiResult(_stringLocalizer, ApiResultStatusCode.Failed,
-                        ApiResultErrorCode.TokenIsNotValid, null),
+                            new ApiResult(_stringLocalizer, ApiResultStatusCode.TokenIsNotValid, null),
                             new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
 
                         return;

@@ -29,12 +29,11 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
             if (userId == 0)
                 parameterValidation.Append(nameof(userId));
             if (parameterValidation.Length > 0)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.ParametersAreNotValid,
+                throw new AppException(ApiResultStatusCode.ParametersAreNotValid,
                     parameterValidation.ToString());
 
             if (string.IsNullOrWhiteSpace(deviceName) && string.IsNullOrWhiteSpace(browser))
-                throw new AppException(ApiResultStatusCode.Failed,
-                    IdentityResultErrorCode.OneOfTheBrowserOrDeviceNameMustBeFill);
+                throw new AppException(IdentityResultStatusCode.OneOfTheBrowserOrDeviceNameMustBeFill);
 
             Id = id;
             UserId = userId;

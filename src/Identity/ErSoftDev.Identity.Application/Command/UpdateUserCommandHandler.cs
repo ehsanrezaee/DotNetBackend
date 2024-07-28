@@ -19,7 +19,7 @@ namespace ErSoftDev.Identity.Application.Command
         {
             var user = await _userRepository.Get(user => user.Id == request.Id, cancellationToken);
             if (user is null)
-                throw new AppException(ApiResultStatusCode.Failed, ApiResultErrorCode.NotFound);
+                throw new AppException(ApiResultStatusCode.NotFound);
 
             user.Update(request.Firstname, request.Lastname, request.CellPhone, request.Email, request.Address,
                 request.IsActive);

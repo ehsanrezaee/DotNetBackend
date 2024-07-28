@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Net;
+﻿using System.Net;
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Log;
@@ -41,11 +40,13 @@ namespace ErSoftDev.Framework.Middlewares
             {
                 _logger.LogFatal("ExceptionHandler", new { Exception = ex });
 
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 if (ex.HttpStatusCode is not null)
                     httpContext.Response.StatusCode = (int)ex.HttpStatusCode;
+
                 httpContext.Response.ContentType = "Application/json";
                 await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(
-                    new ApiResult(ex.StringLocalizer, ex.ApiResultStatusCode, ex.ApiResultErrorCode, ex.Message),
+                    new ApiResult(ex.StringLocalizer, ex.ApiResultStatusCode),
                     new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
             }
             catch (Exception ex)
@@ -55,8 +56,7 @@ namespace ErSoftDev.Framework.Middlewares
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 httpContext.Response.ContentType = "Application/json";
                 await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(
-                    new ApiResult(_stringLocalizer, ApiResultStatusCode.Failed,
-                        ApiResultErrorCode.AnUnexpectedErrorHasOccurred,
+                    new ApiResult(_stringLocalizer, ApiResultStatusCode.AnUnexpectedErrorHasOccurred,
                         _appSetting.Value.ShowExceptionMessage ? " - " + ex.Message + " - " + ex.StackTrace : null),
                     new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
             }
