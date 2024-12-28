@@ -23,7 +23,7 @@ Brief descriptions :
 - Use multi environment applications and apigateway
 - Standard API Resulting
 - Use autofac as di
-- Automated inteface register
+- Automated interface register
 - Cqrs pattern
 - Use mediatr behavior for loggingBehavior
 - Use grpc call for microservice internal connection
