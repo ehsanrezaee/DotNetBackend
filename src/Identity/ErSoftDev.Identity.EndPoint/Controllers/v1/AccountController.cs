@@ -1,9 +1,7 @@
 ﻿using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Identity.Application.Command;
 using MediatR;
-
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ErSoftDev.Identity.EndPoint.Controllers.v1

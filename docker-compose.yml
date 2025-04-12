@@ -67,9 +67,16 @@
         - 1433:1433
         restart: always
         
-    mongo:
+    mongodb:
         image: mongo
+        container_name: mongodb
+        ports:
+        - "27017:27017"
+        environment:
+         MONGO_INITDB_ROOT_USERNAME: mongo
+         MONGO_INITDB_ROOT_PASSWORD: simplePassword
         restart: always
+
         
     enginx:
         image: 'jc21/nginx-proxy-manager:latest'
@@ -81,6 +88,18 @@
         volumes:
         - ./data:/data
         - ./letsencrypt:/etc/letsencrypt
+
+
+    postgreSql:
+        image: postgres
+        container_name: postgres-container
+        ports:
+        - '5432:5432'
+        environment:
+         POSTGRES_USER: myuser
+         POSTGRES_PASSWORD: mypassword
+        restart: always
+
             
 networks : 
     elastic :
@@ -89,7 +108,7 @@ networks :
 volumes : 
     elasticsearch-data :
     redis_volume_data:
-   
+    postgresql_data:
 
 
         

@@ -6,9 +6,9 @@ namespace ErSoftDev.DomainSeedWork
     {
         public string Name { get; private set; }
 
-        public int Id { get; private set; }
+        public int Code { get; private set; }
 
-        protected Enumeration(int id, string name) => (Id, Name) = (id, name);
+        protected Enumeration(int code, string name) => (Code, Name) = (code, name);
 
         public override string ToString() => Name;
 
@@ -27,22 +27,22 @@ namespace ErSoftDev.DomainSeedWork
             }
 
             var typeMatches = GetType().Equals(obj.GetType());
-            var valueMatches = Id.Equals(otherValue.Id);
+            var valueMatches = Code.Equals(otherValue.Code);
 
             return typeMatches && valueMatches;
         }
 
-        public override int GetHashCode() => Id.GetHashCode();
+        public override int GetHashCode() => Code.GetHashCode();
 
         public static int AbsoluteDifference(Enumeration firstValue, Enumeration secondValue)
         {
-            var absoluteDifference = Math.Abs(firstValue.Id - secondValue.Id);
+            var absoluteDifference = Math.Abs(firstValue.Code - secondValue.Code);
             return absoluteDifference;
         }
 
         public static T FromValue<T>(int value) where T : Enumeration
         {
-            var matchingItem = Parse<T, int>(value, "value", item => item.Id == value);
+            var matchingItem = Parse<T, int>(value, "value", item => item.Code == value);
             return matchingItem;
         }
 
@@ -62,6 +62,6 @@ namespace ErSoftDev.DomainSeedWork
             return matchingItem;
         }
 
-        public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
+        public int CompareTo(object other) => Code.CompareTo(((Enumeration)other).Code);
     }
 }

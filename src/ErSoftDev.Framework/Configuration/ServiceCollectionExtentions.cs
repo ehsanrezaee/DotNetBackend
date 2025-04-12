@@ -40,6 +40,10 @@ using Serilog.Sinks.Elasticsearch;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Serialization;
+using ErSoftDev.Framework.Mongo;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson;
 
 namespace ErSoftDev.Framework.Configuration
 {
@@ -444,6 +448,11 @@ namespace ErSoftDev.Framework.Configuration
                 .CreateLogger();
 
             serviceCollection.AddSerilog();
+        }
+
+        public static void AddCustomMongoDbContext(this IServiceCollection service, AppSetting appSetting)
+        {
+            service.AddScoped(_ => new BaseMongoDbContext(appSetting));
         }
 
         private static LogEventLevel GetLogLevel(string appSettingLogLevel)

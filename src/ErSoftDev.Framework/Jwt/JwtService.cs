@@ -41,7 +41,7 @@ namespace ErSoftDev.Framework.Jwt
                 NotBefore = DateTime.Now,
                 Expires = tokenExpiry,
                 SigningCredentials = signingCredentials,// Header and Payload coding
-                EncryptingCredentials = encryptingCredentials,//Header and Payload coding
+                //EncryptingCredentials = encryptingCredentials,//Header and Payload coding
                 Subject = getClaims(tokenRequest.Subject)
             };
 

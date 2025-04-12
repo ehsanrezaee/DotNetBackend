@@ -1,4 +1,5 @@
 ﻿using ErSoftDev.Framework.BaseApp;
+using ErSoftDev.Framework.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

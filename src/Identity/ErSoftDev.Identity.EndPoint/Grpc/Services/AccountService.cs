@@ -24,8 +24,8 @@ namespace ErSoftDev.Identity.EndPoint.Grpc.Services
                 new IsSecurityStampTokenValidQuery(request.SecurityStampToken)
                 , context.CancellationToken);
             if (isSecurityStampTokenValid)
-                return new IsSecurityStampTokenResponseGrpc() { Status = ApiResultStatusCode.Success.Id };
-            return new IsSecurityStampTokenResponseGrpc() { Status = IdentityResultStatusCode.TokenIsNotValid.Id };
+                return new IsSecurityStampTokenResponseGrpc() { Status = ApiResultStatusCode.Success.Code };
+            return new IsSecurityStampTokenResponseGrpc() { Status = IdentityResultStatusCode.TokenIsNotValid.Code };
         }
 
         public override async Task<CheckAuthorizeResponseGrpc> CheckAuthorize(CheckAuthorizeRequestGrpc request,
@@ -34,8 +34,8 @@ namespace ErSoftDev.Identity.EndPoint.Grpc.Services
             var isAuthorize = await _mediator.Send(new CheckAuthorizeQuery(request.SecurityStampToken, request.Operate),
                 context.CancellationToken);
             if (isAuthorize)
-                return new CheckAuthorizeResponseGrpc() { Status = ApiResultStatusCode.Success.Id };
-            return new CheckAuthorizeResponseGrpc() { Status = ApiResultStatusCode.TokenIsNotValid.Id };
+                return new CheckAuthorizeResponseGrpc() { Status = ApiResultStatusCode.Success.Code };
+            return new CheckAuthorizeResponseGrpc() { Status = ApiResultStatusCode.TokenIsNotValid.Code };
         }
 
         public override async Task<CheckAuthenticationAndAuthorizationGrpcResponse> CheckAuthenticationAndAuthorization(CheckAuthenticationAndAuthorizationGrpcRequest request,
@@ -47,8 +47,8 @@ namespace ErSoftDev.Identity.EndPoint.Grpc.Services
                     context.CancellationToken);
             if (isAuthenticateAndAuthorize)
                 return new CheckAuthenticationAndAuthorizationGrpcResponse()
-                { Status = ApiResultStatusCode.Success.Id };
-            return new CheckAuthenticationAndAuthorizationGrpcResponse() { Status = ApiResultStatusCode.TokenIsNotValid.Id };
+                { Status = ApiResultStatusCode.Success.Code };
+            return new CheckAuthenticationAndAuthorizationGrpcResponse() { Status = ApiResultStatusCode.TokenIsNotValid.Code };
         }
     }
 }

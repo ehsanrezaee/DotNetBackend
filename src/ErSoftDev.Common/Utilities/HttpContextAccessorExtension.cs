@@ -34,7 +34,7 @@ namespace ErSoftDev.Common.Utilities
 
         public static string? UserIdClaimIdentity(this IHttpContextAccessor accessor)
         {
-            if (accessor.HttpContext.User.Identity is ClaimsIdentity identity)
+            if (accessor?.HttpContext?.User?.Identity is ClaimsIdentity identity)
                 return identity.GetUserId();
 
             return "0";

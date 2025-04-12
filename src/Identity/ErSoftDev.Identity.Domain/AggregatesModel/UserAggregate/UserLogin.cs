@@ -32,8 +32,8 @@ namespace ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate
                 throw new AppException(ApiResultStatusCode.ParametersAreNotValid,
                     parameterValidation.ToString());
 
-            if (string.IsNullOrWhiteSpace(deviceName) && string.IsNullOrWhiteSpace(browser))
-                throw new AppException(IdentityResultStatusCode.OneOfTheBrowserOrDeviceNameMustBeFill);
+            //if (string.IsNullOrWhiteSpace(deviceName) && string.IsNullOrWhiteSpace(browser))
+            //    throw new AppException(IdentityResultStatusCode.OneOfTheBrowserOrDeviceNameMustBeFill);
 
             Id = id;
             UserId = userId;

@@ -63,7 +63,8 @@ namespace ErSoftDev.Framework.RabbitMq
         private void SubsManager_OnEventRemoved(object sender, string eventName)
         {
             if (!_persistentConnection.IsConnected)
-                _persistentConnection.TryConnect();
+                //_persistentConnection.TryConnect();
+                return;
 
 
             using var channel = _persistentConnection.CreateModel();
@@ -81,8 +82,8 @@ namespace ErSoftDev.Framework.RabbitMq
             var retryCount = _appSetting.Value.EventBusRabbitMq.TryCount;
 
             // this is for check persistent connection is ok or not and if not ok retry no limited to connect
-            if (!_persistentConnection.IsConnected)
-                _persistentConnection.TryConnect();
+            //if (!_persistentConnection.IsConnected)
+            //    _persistentConnection.TryConnect();
 
 
             // use poly to config repeatable oprations
@@ -144,7 +145,8 @@ namespace ErSoftDev.Framework.RabbitMq
                 return;
 
             if (!_persistentConnection.IsConnected)
-                _persistentConnection.TryConnect();
+                //_persistentConnection.TryConnect();
+                return;
 
 
             using var channel = _persistentConnection.CreateModel();
@@ -168,7 +170,7 @@ namespace ErSoftDev.Framework.RabbitMq
         private IModel CreateConsumerChannel()
         {
             if (!_persistentConnection.IsConnected)
-                _persistentConnection.TryConnect();
+                return null;
 
             var channel = _persistentConnection.CreateModel();
 
@@ -252,7 +254,8 @@ namespace ErSoftDev.Framework.RabbitMq
         public int GetQueueMessageCount()
         {
             if (!_persistentConnection.IsConnected)
-                _persistentConnection.TryConnect();
+                return 0;
+            //_persistentConnection.TryConnect();
 
             using var channel = _persistentConnection.CreateModel();
             return (int)channel.MessageCount(_queueName);
