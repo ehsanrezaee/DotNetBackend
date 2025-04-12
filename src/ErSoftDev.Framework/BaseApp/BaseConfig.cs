@@ -31,6 +31,7 @@ namespace ErSoftDev.Framework.BaseApp
             services.AddHttpClient();
             services.Configure<AppSetting>(Configuration.GetSection(_configKey));
             services.AddSingleton(_appSetting);
+            services.AddCustomMongoDbContext(_appSetting);
             services.AddRabbitMqConnection(_appSetting);
             services.AddRabbitMqRegistration(_appSetting);
             services.AddCustomHangfire(_appSetting);

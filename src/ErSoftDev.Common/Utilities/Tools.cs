@@ -22,7 +22,9 @@ namespace ErSoftDev.Common.Utilities
             {
                 try
                 {
-                    if (assembly.FullName == "Microsoft.Data.SqlClient")
+                    if (assembly.FullName is "Microsoft.Data.SqlClient"
+                        or "Microsoft.CodeAnalysis.CodeGeneration.CodeGenerationParameterSymbol"
+                        or "Microsoft.CodeAnalysis.Workspaces")
                         continue;
 
                     res.Add(Assembly.Load(assembly.FullName));

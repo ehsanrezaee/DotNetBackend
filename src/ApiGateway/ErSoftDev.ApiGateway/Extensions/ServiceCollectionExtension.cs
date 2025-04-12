@@ -55,7 +55,7 @@ namespace ErSoftDev.ApiGateway.Extensions
                     ValidateIssuer = false,
                     ValidIssuer = issuer,
 
-                    TokenDecryptionKey = new SymmetricSecurityKey(encryptKey),
+                    //TokenDecryptionKey = new SymmetricSecurityKey(encryptKey),
 
                 };
                 options.RequireHttpsMetadata = false;
@@ -121,7 +121,7 @@ namespace ErSoftDev.ApiGateway.Extensions
 
                         var isAuthenticateAndAuthorize =
                             await accountService.CheckAuthenticateAndAuthorization(securityStamp, actionName);
-                        if (isAuthenticateAndAuthorize.Status != ApiResultStatusCode.Success.Id)
+                        if (isAuthenticateAndAuthorize.Status != ApiResultStatusCode.Success.Code)
                         {
                             var stringLocalizer = context.HttpContext.RequestServices
                                 .GetRequiredService<IStringLocalizer<SharedTranslate>>();

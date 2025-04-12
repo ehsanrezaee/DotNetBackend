@@ -6,18 +6,18 @@ namespace ErSoftDev.DomainSeedWork
     public class ApiResult
     {
         [JsonProperty]
-        private int Status { get; set; }
+        public int Status { get; private set; }
         [JsonProperty]
-        private string Description { get; set; }
+        public string Description { get; private set; }
 
-        private string? Message { get; set; }
+        public string? Message { get; private set; }
 
         public ApiResult(IStringLocalizer stringLocalizer,
             ApiResultStatusCode status, string? message = null
             )
         {
             var strLocalizer = stringLocalizer;
-            Status = status.Id;
+            Status = status.Code;
             Description = strLocalizer[status.ToString()].ResourceNotFound
                 ? ResourceHelper.GetValue(status.ToString())
                 : strLocalizer[status.ToString()];

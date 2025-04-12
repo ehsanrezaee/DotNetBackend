@@ -1,10 +1,11 @@
 ﻿using DotNetCore.CAP;
 using ErSoftDev.Common.Utilities;
+using ErSoftDev.Framework.Configuration;
 using EventBus.Base.Standard;
 
 namespace ErSoftDev.Framework.RabbitMq
 {
-    public class IntegrationEventBus : IIntegrationEventBus
+    public class IntegrationEventBus : IIntegrationEventBus, ITransientDependency
     {
         private readonly ICapPublisher _capPublisher;
         public IntegrationEventBus(ICapPublisher capPublisher)

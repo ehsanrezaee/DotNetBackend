@@ -23,6 +23,7 @@
     {
         public string AppConnectionString { get; set; }
         public string AppConnectionStringReadOnly { get; set; }
+        public string MongoConnectionString { get; set; }
     }
     public class Jaeger
     {
