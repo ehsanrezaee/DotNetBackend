@@ -2,7 +2,7 @@
 
 namespace ErSoftDev.Framework.Mongo;
 
-internal interface IMongoRepository<T>
+public interface IMongoRepository<T>
 {
     public Task<IEnumerable<T>> GetAll(CancellationToken cancellationToken);
     public Task<T> GetById(string id, CancellationToken cancellationToken);
