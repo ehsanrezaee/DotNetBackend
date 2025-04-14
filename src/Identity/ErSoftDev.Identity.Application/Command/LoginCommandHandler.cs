@@ -2,20 +2,15 @@
 using ErSoftDev.DomainSeedWork;
 using ErSoftDev.Framework.BaseApp;
 using ErSoftDev.Framework.Jwt;
-using ErSoftDev.Framework.Mongo;
 using ErSoftDev.Framework.Redis;
 using ErSoftDev.Identity.Domain;
 using ErSoftDev.Identity.Domain.AggregatesModel.UserAggregate;
 using ErSoftDev.Identity.Domain.SeedWorks;
-using ErSoftDev.Identity.Infrastructure.NoSql.Models;
-using ErSoftDev.Identity.Infrastructure.NoSql.Repositories;
 using IdGen;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using MongoDB.Driver;
-using System.Collections.ObjectModel;
 using System.Security.Claims;
 
 namespace ErSoftDev.Identity.Application.Command
@@ -29,15 +24,13 @@ namespace ErSoftDev.Identity.Application.Command
         private readonly IStringLocalizer<SharedTranslate> _stringLocalizer;
         private readonly IRedisService _redisService;
         private readonly IStringLocalizer<IdentityTranslate> _identityStringLocalizer;
-        private readonly IInstrumentMongoRepository _instrumentMongoRepository;
 
         public LoginCommandHandler(IJwtService jwtService, IUserRepository userRepository,
             IOptions<AppSetting> appSetting,
             IIdGenerator<long> idGenerator,
             IStringLocalizer<SharedTranslate> stringLocalizer,
             IRedisService redisService,
-            IStringLocalizer<IdentityTranslate> identityStringLocalizer,
-            IInstrumentMongoRepository instrumentMongoRepository)
+            IStringLocalizer<IdentityTranslate> identityStringLocalizer)
         {
             _jwtService = jwtService;
             _userRepository = userRepository;
@@ -46,7 +39,6 @@ namespace ErSoftDev.Identity.Application.Command
             _stringLocalizer = stringLocalizer;
             _redisService = redisService;
             _identityStringLocalizer = identityStringLocalizer;
-            _instrumentMongoRepository = instrumentMongoRepository;
         }
 
         public async Task<ApiResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
